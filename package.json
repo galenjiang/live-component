@@ -1,6 +1,6 @@
 {
   "name": "live-components",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,7 @@
     "build": "cross-env NODE_BD=build node ./build/build.js"
   },
   "author": "",
-  "license": "ISC",
+  "license": "private",
   "devDependencies": {
     "autoprefixer-loader": "^3.2.0",
     "babel-cli": "^6.23.0",
