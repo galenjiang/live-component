@@ -1,0 +1,40 @@
+@prefix: text-ads-resource;
+.@{prefix} {
+  position: relative;
+
+    .@{prefix}-item {
+      position: relative;
+      margin: 20px;
+      //min-height: 154px;
+      padding-top: 10px;
+      border: 1px dashed #E3E5EB;
+      border-radius: 2px;
+
+      .@{prefix}-item-title {
+        position: absolute;
+        top: -10px;
+        left: 20px;
+        width: 50px;
+        background-color: #fff;
+        text-align: center;
+      }
+      .@{prefix}-item-content {
+        .@{prefix}-item-delete {
+          position: absolute;
+          top: 17px;
+          right: 20px;
+          cursor: pointer;
+          z-index: 1;
+        }
+      }
+
+      .@{prefix}-item-radio-label {
+        display: inline-block;
+        width: 70px;
+      }
+
+    }
+  .@{prefix}-add-button {
+    margin: 20px;
+  }
+}

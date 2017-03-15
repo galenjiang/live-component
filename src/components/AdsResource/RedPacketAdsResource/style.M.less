@@ -1,0 +1,67 @@
+@prefix: redpacket-ads-resource;
+.@{prefix} {
+  .@{prefix}-checkbox{
+    margin-bottom: 10px;
+  }
+  .@{prefix}-specific-line {
+    font-size: 16px;
+    text-align: center;
+    position: relative;
+    margin: 15px 0;
+    &::after{
+      content: '';
+      width: 100%;
+      display: inline-block;
+      border: 1px solid #cccccc;
+      z-index: 1;
+    }
+    em{
+      content: '';
+      width: 100%;
+      display: inline-block;
+      border: 1px solid #cccccc;
+      z-index: 1;
+    }
+    span {
+      display: inline-block;
+      z-index: 10;
+      padding: 3px;
+      position: absolute;
+      background: #fff;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+  .@{prefix}-color-btn{
+    text-align: right;
+    vertical-align: middle;
+    margin: 7px 0;
+    padding: 0 5px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    display: inline-block;
+    color: #ccc;
+    cursor: pointer;
+  }
+  .@{prefix}-color-input{
+    height: 0;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .@{prefix}-color-picker {
+    position: absolute;
+    z-index: 1;
+  }
+  // .chrome-picker{
+
+  // }
+  .@{prefix}-description-img{
+    .picUploader-view-mask-container{
+      background-color: rgba(0,0,0,0.2) !important;
+    }
+
+  }
+  .@{prefix}-radio{
+    margin-bottom: 10px;
+  }
+}

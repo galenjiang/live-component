@@ -1,0 +1,42 @@
+@prefix: video-ads-resource;
+
+.@{prefix} {
+  .@{prefix}-ispip-container{
+    margin-bottom: 10px;
+  }
+  .ModalBallsTemplate-configure {
+    max-height: 590px;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+  .@{prefix}-video-list {
+    position: relative;
+    display: block;
+    width: 90%;
+    margin: 5px auto 25px auto;
+    border: 1px solid #ccc;
+    padding: 15px;
+    .ant-form-item {
+      margin-bottom: 10px;
+    }
+    .@{prefix}-video-list-title {
+      position: absolute;
+      width: auto;
+      padding: 5px 10px;
+      background: #fff;
+      left: 10%;
+      top: -15px;
+      font-size: 12px;
+    }
+    .@{prefix}-video-list-item {
+      display: initial;
+    }
+    .@{prefix}-video-list-btn {
+      position: absolute;
+      z-index: 1;
+      top: 50px;
+      right: 15px;
+      // transform: translate(0, -50%);
+    }
+  }
+}

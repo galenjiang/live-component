@@ -1,0 +1,23 @@
+@class-name-prefix: ImageCropModal;
+
+.@{class-name-prefix} {
+  position: relative;
+  .@{class-name-prefix}-detail {
+    width: 100%;
+    text-align: center;
+  }
+  .@{class-name-prefix}-view {
+    max-width: 100%;
+    min-height: 200px;
+    max-height: 300px;
+    text-align: center;
+    display: block;
+    overflow: auto;
+    & > div {
+      position: relative;
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+  }
+}

@@ -1,0 +1,48 @@
+@prefix: vote-ads-resource;
+
+.@{prefix} {
+  position: relative;
+    //投票配置标题
+    .@{prefix}-configure-title {
+      margin: 0 0 1em 0;
+    }
+    //投票基础选项
+    .@{prefix}-configure-base {
+      // .@{prefix}-title-crop {
+      //   width: 200px;
+      //   height: 150px;
+      // }
+    }
+
+    //投票额外选项
+    .@{prefix}-configure-qoptions {
+      position: relative;
+      .@{prefix}-configure-qoptions-list {
+        position: relative;
+        margin-bottom: 20px;
+        .@{prefix}-configure-qoptions-title {
+          text-indent: 1em;
+        }
+
+        .@{prefix}-configure-qoptions-detail {
+          position: relative;
+          margin: 1em;
+          padding: 1em;
+          border: 1px dashed #E3E5EB;
+          border-radius: 5px;
+          .@{prefix}-configure-qoptions-delete {
+          position: absolute;
+          top: 50%;
+          right: 20px;
+          z-index: 100;
+          transform: translateY(-50%);
+          i {
+            font-size: 16px;
+            cursor: pointer;
+            color: #c6cbd7;
+          }
+        }
+        }
+      }
+    }
+}

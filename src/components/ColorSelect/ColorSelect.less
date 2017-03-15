@@ -1,0 +1,23 @@
+@class-name-prefix: ColorSelect;
+@active-color: #D8E8F4;
+.@{class-name-prefix} {
+  position: relative;
+  .@{class-name-prefix}-select {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    margin: 0 6px;
+    vertical-align: middle;
+    border-radius: 100%;
+    padding: 3px;
+    cursor: pointer;
+    border: 3px solid #fff;
+    transition: all 300ms;
+    &:hover {
+      border-color: @active-color;
+    }
+    &.active {
+      border-color: @active-color;
+    }
+  }
+}

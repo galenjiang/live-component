@@ -1,0 +1,42 @@
+@class-name-prefix: prize-put-modal;
+
+
+.@{class-name-prefix} {
+
+  &.Horizontally {
+    .@{class-name-prefix}-content {
+      width: 480px;
+      height: 270px;
+    }
+  }
+  &.vertically {
+    .@{class-name-prefix}-content {
+      width: 270px;
+      height: 480px;
+    }
+  }
+
+  .@{class-name-prefix}-content{
+    position: relative;
+    transition: all 300ms;
+    margin: 0 auto;
+    width: 480px;
+    height: 270px;
+  }
+  .@{class-name-prefix}-configure{
+    margin-top: 20px;
+
+    .@{class-name-prefix}-room {
+      .@{class-name-prefix}-room-title {
+        text-align: center;
+        font-size: 25px;
+        font-weight: bold;
+      }
+      .@{class-name-prefix}-room-container {
+        border: 1px dashed pink;
+        margin: 20px 100px;
+        padding-top: 20px;
+      }
+    }
+  }
+}

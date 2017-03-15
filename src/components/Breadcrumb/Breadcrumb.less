@@ -1,0 +1,90 @@
+@class-name-prefix: Breadcrumb;
+@breadcrumb-item-height: 36px;
+@breadcrumb-active-bg: #35B85A;
+@breadcrumb-active-icon-bg: #35B85A;
+@breadcrumb-counter-size: 20px;
+
+.@{class-name-prefix} {
+  position: relative;
+  .@{class-name-prefix}-content {
+    display: flex;
+    & > section.@{class-name-prefix}-item {
+      position: relative;
+      height: @breadcrumb-item-height;
+      border-bottom: 1px solid #E3E5EB;
+      flex: 1;
+      font-size: 12px;
+      text-align: center;
+      line-height: @breadcrumb-item-height;
+      background: #fff;
+      font-family: PingFangSC-Regular;
+      cursor: pointer;
+      color: #9B9B9B;
+      .@{class-name-prefix}-counter {
+        margin: 0 3px;
+        width: @breadcrumb-counter-size;
+        height: @breadcrumb-counter-size;
+        border-radius: 100%;
+        color: #fff;
+        line-height: @breadcrumb-counter-size;
+        font-size: 12px;
+        border: 1px solid #fff;
+        display: none;
+      }
+      i {
+        color: @breadcrumb-active-icon-bg;
+        margin: 0 3px;
+        font-size: 16px;
+        display: inline-block;
+      }
+      &.active {
+        background: @breadcrumb-active-bg;
+        color: #fff;
+        .@{class-name-prefix}-counter {
+          display: inline-block;
+        }
+        i {
+          display: none;
+        }
+        &:after, &:before {
+          border-left-color: @breadcrumb-active-bg;
+        }
+      }
+
+      &:last-of-type {
+        &:before, &:after {
+          display: none;
+        }
+      }
+      &:before {
+        content: " ";
+        display: block;
+        width: 0;
+        height: 0;
+        border-top: @breadcrumb-item-height/2 solid transparent;
+        border-bottom: @breadcrumb-item-height/2 solid transparent;
+        border-left: @breadcrumb-item-height/2-3 solid #fff;
+        position: absolute;
+        top: 50%;
+        margin-left: 1px;
+        left: 100%;
+        z-index: 1;
+        transform: translateY(-50%);
+      }
+      &:after {
+        content: " ";
+        display: block;
+        width: 0;
+        height: 0;
+        border-top: @breadcrumb-item-height/2 solid transparent;
+        border-bottom: @breadcrumb-item-height/2 solid transparent;
+        border-left: @breadcrumb-item-height/2-3 solid #fff;
+        position: absolute;
+        top: 50%;
+        left: 100%;
+        z-index: 2;
+        transform: translateY(-50%);
+      }
+    }
+  }
+}

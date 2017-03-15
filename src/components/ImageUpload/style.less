@@ -1,0 +1,61 @@
+@import "./simple-image-preview";
+
+@main-header-height: 50px;
+@main-sidebar-width: 200px;
+
+@live-color-gray: gray;
+@live-color-warning: #ffbf00;
+
+
+@class-name-prefix: pic-uploader;
+@mask-class-name-prefix: pic-uploader-view;
+
+.@{class-name-prefix}, .@{class-name-prefix}-drag-area {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.@{class-name-prefix} {
+
+  .@{class-name-prefix}-view {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    .simpleImagePreview(@mask-class-name-prefix);
+    .@{class-name-prefix}-disabled {
+      border: 1px solid @live-color-gray;
+      width: 100%;
+      height: 100%;
+      font-size: 12px;
+      .@{class-name-prefix}-disabled-content {
+        position: absolute;
+        text-align: center;
+        width: 80%;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+      }
+    }
+    .@{class-name-prefix}-show {
+      width: 100%;
+      height: 100%;
+      //.@{class-name-prefix}-edit-container {
+      //  position: absolute;
+      //  width: 70%;
+      //  left: 50%;
+      //  top: 50%;
+      //  transform: translate(-50%, -50%);
+      //}
+      .@{class-name-prefix}-loading {
+        position: absolute;
+        width: 70%;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+      }
+    }
+
+  }
+}

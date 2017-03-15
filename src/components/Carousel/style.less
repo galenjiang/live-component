@@ -1,0 +1,42 @@
+@classNamePrefix: carousel;
+.@{classNamePrefix} {
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+  user-select: none;
+  -ms-touch-action: pan-y;
+  touch-action: pan-y;
+  .@{classNamePrefix}-initialized {
+    position: relative;
+    .@{classNamePrefix}-dots {
+      & > button {
+        position: absolute;
+        top: 50%;
+        transform: translate3D(-50%, -50%, 0);
+      }
+      & > button:first-of-type {
+        left: 5px;
+      }
+      & > button:last-of-type {
+        right: -25px;
+      }
+    }
+    .@{classNamePrefix}-list {
+      position: relative;
+      overflow: hidden;
+      display: block;
+      margin: 0;
+      padding: 0;
+      .@{classNamePrefix}-track {
+        transition: transform 300ms;
+        &:after {
+        // @include clearfix();
+        }
+        transform: translate3d(0, 0, 0);
+        .@{classNamePrefix}-track-item {
+          float: left;
+        }
+      }
+    }
+  }
+}
