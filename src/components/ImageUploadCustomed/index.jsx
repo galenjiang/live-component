@@ -16,7 +16,7 @@ export default class ImageUploadCustomed extends Component {
   static propTypes = {
     // onDelete: PropTypes.func.isRequired,
     // onUploadChange: PropTypes.func.isRequired,
-    fileURL: PropTypes.string,
+    // fileURL: PropTypes.string,
     crop: PropTypes.bool.isRequired,
     cropOptions: PropTypes.object.isRequired,
   }

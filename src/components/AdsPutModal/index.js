@@ -433,7 +433,7 @@ export default class AdsPutModal extends Component {
       this.setState({
         putData,
       })
-    
+
     }
     fileReader.readAsText(file, 'UTF-8')
   }
@@ -1023,7 +1023,7 @@ export default class AdsPutModal extends Component {
                         <Icon type="upload" /> 点击上传时间段
                       </Button>
                     </Upload>
-                  
+
                 </div>
               </div>
 

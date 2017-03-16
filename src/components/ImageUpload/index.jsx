@@ -15,7 +15,7 @@ import ImageCropModal from './ImageCropModal';
 let _isMounted;
 /*eslint-enable*/
 
-export default class ImageUploader extends Component {
+export default class ImageUpload extends Component {
   constructor(props) {
     super();
     this.state = {
@@ -32,7 +32,7 @@ export default class ImageUploader extends Component {
     checkFile: PropTypes.func.isRequired,
     uploadFileByBase64: PropTypes.func.isRequired,
     uploadFileByFormData: PropTypes.func.isRequired,
-    fileURL: PropTypes.string.isRequired,
+    // fileURL: PropTypes.string.isRequired,     // antd warning remove
     disabled: PropTypes.bool,
     crop: PropTypes.bool,
     cropOptions: PropTypes.object,
@@ -122,8 +122,8 @@ export default class ImageUploader extends Component {
   }
 
   deletePicUpload = () => {
-    const { onUploadChange, onDelete, index } = this.props;
-    onDelete(index).then(() => {
+    const { onUploadChange, onDelete } = this.props;
+    onDelete().then(() => {
       if (_isMounted) {
         this.setState({
           fileName: '',

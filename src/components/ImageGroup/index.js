@@ -109,8 +109,7 @@ export default class ImageGroup extends Component {
                 <ImageUploadCustomed
                   {...props.cropConfig}
                   fileURL={item.value}
-                  index={index}
-                  onDelete={deleteImageItem}
+                  onDelete={() => deleteImageItem(index)}
                   onUploadChange={value => setFields(index, value)}
                 />
               </div>

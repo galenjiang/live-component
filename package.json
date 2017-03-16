@@ -1,14 +1,68 @@
 {
-  "name": "live-components",
-  "version": "0.1.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "server": "cross-env NODE_BD=server node ./build/dev-server.js",
-    "build": "cross-env NODE_BD=build node ./build/build.js"
+  "_args": [
+    [
+      {
+        "raw": "live-components",
+        "scope": null,
+        "escapedName": "live-components",
+        "name": "live-components",
+        "rawSpec": "",
+        "spec": "latest",
+        "type": "tag"
+      },
+      "/mnt/c/github/video++/consolelive/client/modules/admin-temp"
+    ]
+  ],
+  "_from": "live-components@latest",
+  "_id": "live-components@0.1.0",
+  "_inCache": true,
+  "_location": "/live-components",
+  "_nodeVersion": "6.9.1",
+  "_npmOperationalInternal": {
+    "host": "packages-12-west.internal.npmjs.com",
+    "tmp": "tmp/live-components-0.1.0.tgz_1489588062295_0.3563771180342883"
   },
+  "_npmUser": {
+    "name": "galenjiang",
+    "email": "249254832@qq.com"
+  },
+  "_npmVersion": "3.10.8",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "live-components",
+    "scope": null,
+    "escapedName": "live-components",
+    "name": "live-components",
+    "rawSpec": "",
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/live-components/-/live-components-0.1.0.tgz",
+  "_shasum": "a23d1f9c82ee4aac835fcb9651a1b04efecfb2f0",
+  "_shrinkwrap": null,
+  "_spec": "live-components",
+  "_where": "/mnt/c/github/video++/consolelive/client/modules/admin-temp",
   "author": "",
-  "license": "private",
+  "dependencies": {
+    "antd": "^2.7.2",
+    "axios": "^0.15.3",
+    "babel-runtime": "^6.23.0",
+    "classnames": "^2.2.5",
+    "jsonp": "^0.2.1",
+    "lodash": "^4.17.4",
+    "moment": "^2.17.1",
+    "react": "^15.4.2",
+    "react-color": "^2.11.3",
+    "react-css-modules": "^4.1.0",
+    "react-dom": "^15.4.2",
+    "react-hot-loader": "^3.0.0-beta.6",
+    "react-router-dom": "^4.0.0-beta.6"
+  },
+  "description": "",
   "devDependencies": {
     "autoprefixer-loader": "^3.2.0",
     "babel-cli": "^6.23.0",
@@ -41,19 +95,26 @@
     "webpack-dev-server": "^2.3.0",
     "webpack-merge": "^2.6.1"
   },
-  "dependencies": {
-    "antd": "^2.7.2",
-    "axios": "^0.15.3",
-    "babel-runtime": "^6.23.0",
-    "classnames": "^2.2.5",
-    "jsonp": "^0.2.1",
-    "lodash": "^4.17.4",
-    "moment": "^2.17.1",
-    "react": "^15.4.2",
-    "react-color": "^2.11.3",
-    "react-css-modules": "^4.1.0",
-    "react-dom": "^15.4.2",
-    "react-hot-loader": "^3.0.0-beta.6",
-    "react-router-dom": "^4.0.0-beta.6"
-  }
+  "directories": {},
+  "dist": {
+    "shasum": "a23d1f9c82ee4aac835fcb9651a1b04efecfb2f0",
+    "tarball": "https://registry.npmjs.org/live-components/-/live-components-0.1.0.tgz"
+  },
+  "gitHead": "2287ad2a45f1f7f9cd4c9f95f78d1925f2cb5053",
+  "license": "private",
+  "main": "index.js",
+  "maintainers": [
+    {
+      "name": "galenjiang",
+      "email": "249254832@qq.com"
+    }
+  ],
+  "name": "live-components",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "scripts": {
+    "build": "cross-env NODE_BD=build node ./build/build.js",
+    "server": "cross-env NODE_BD=server node ./build/dev-server.js"
+  },
+  "version": "0.1.1"
 }

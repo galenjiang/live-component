@@ -1,5 +1,6 @@
 // official
 import React, { Component, PropTypes } from 'react';
+import update from 'react-addons-update';
 import CSSModule from 'react-css-modules';
 
 // 3rd-part
@@ -70,7 +71,7 @@ export default class MagicStickerAdsResource extends Component {
   }
 
   render() {
-    const prefix = 'video-ads-resource';
+    const prefix = 'ads-resource';
 
     const { isCreated, onCancel, form } = this.props;
     const { loading, data } = this.state;
@@ -127,7 +128,7 @@ export default class MagicStickerAdsResource extends Component {
                   form.getFieldDecorator('leftEar', {
                     valuePropName: 'fileURL',
                     trigger: 'onUploadChange',
-                    initialValue: data.pic,
+                    initialValue: data.leftEar,
                     rules: [{
                       type: 'string',
                       pattern: reg.httpRegWithProtocol,
@@ -156,7 +157,7 @@ export default class MagicStickerAdsResource extends Component {
                   form.getFieldDecorator('rightEar', {
                     valuePropName: 'fileURL',
                     trigger: 'onUploadChange',
-                    initialValue: data.pic,
+                    initialValue: data.rightEar,
                     rules: [{
                       type: 'string',
                       pattern: reg.httpRegWithProtocol,
