@@ -11,41 +11,64 @@
         "type": "tag"
       },
       "/mnt/c/github/video++/consolelive/client/modules/admin-temp"
+    ],
+    [
+      {
+        "raw": "live-components@^0.1.2",
+        "scope": null,
+        "escapedName": "live-components",
+        "name": "live-components",
+        "rawSpec": "^0.1.2",
+        "spec": ">=0.1.2 <0.2.0",
+        "type": "range"
+      },
+      "/mnt/c/github/video++/consolelive/client/modules/console"
     ]
   ],
-  "_from": "live-components@latest",
-  "_id": "live-components@0.1.0",
+  "_from": "live-components@^0.1.2",
+  "_id": "live-components@0.1.2",
   "_inCache": true,
   "_location": "/live-components",
-  "_nodeVersion": "6.9.1",
+  "_nodeVersion": "7.7.0",
   "_npmOperationalInternal": {
-    "host": "packages-12-west.internal.npmjs.com",
-    "tmp": "tmp/live-components-0.1.0.tgz_1489588062295_0.3563771180342883"
+    "host": "packages-18-east.internal.npmjs.com",
+    "tmp": "tmp/live-components-0.1.2.tgz_1489655781162_0.5785260098055005"
   },
   "_npmUser": {
     "name": "galenjiang",
     "email": "249254832@qq.com"
   },
-  "_npmVersion": "3.10.8",
-  "_phantomChildren": {},
+  "_npmVersion": "4.1.2",
+  "_phantomChildren": {
+    "babel-template": "6.23.0",
+    "debug": "2.6.3",
+    "global": "4.3.1",
+    "hoist-non-react-statics": "1.2.0",
+    "lodash": "4.17.4",
+    "object-unfreeze": "1.1.0",
+    "react-deep-force-update": "2.0.1",
+    "react-proxy": "3.0.0-alpha.1",
+    "redbox-react": "1.3.4",
+    "source-map": "0.4.4"
+  },
   "_requested": {
-    "raw": "live-components",
+    "raw": "live-components@^0.1.2",
     "scope": null,
     "escapedName": "live-components",
     "name": "live-components",
-    "rawSpec": "",
-    "spec": "latest",
-    "type": "tag"
+    "rawSpec": "^0.1.2",
+    "spec": ">=0.1.2 <0.2.0",
+    "type": "range"
   },
   "_requiredBy": [
     "#USER",
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/live-components/-/live-components-0.1.0.tgz",
-  "_shasum": "a23d1f9c82ee4aac835fcb9651a1b04efecfb2f0",
+  "_resolved": "https://registry.npmjs.org/live-components/-/live-components-0.1.2.tgz",
+  "_shasum": "55e3e86e013d169bc2e8cd703f59b1165f737be0",
   "_shrinkwrap": null,
-  "_spec": "live-components",
-  "_where": "/mnt/c/github/video++/consolelive/client/modules/admin-temp",
+  "_spec": "live-components@^0.1.2",
+  "_where": "/mnt/c/github/video++/consolelive/client/modules/console",
   "author": "",
   "dependencies": {
     "antd": "^2.7.2",
@@ -62,7 +85,6 @@
     "react-hot-loader": "^3.0.0-beta.6",
     "react-router-dom": "^4.0.0-beta.6"
   },
-  "description": "",
   "devDependencies": {
     "autoprefixer-loader": "^3.2.0",
     "babel-cli": "^6.23.0",
@@ -97,8 +119,8 @@
   },
   "directories": {},
   "dist": {
-    "shasum": "a23d1f9c82ee4aac835fcb9651a1b04efecfb2f0",
-    "tarball": "https://registry.npmjs.org/live-components/-/live-components-0.1.0.tgz"
+    "shasum": "55e3e86e013d169bc2e8cd703f59b1165f737be0",
+    "tarball": "https://registry.npmjs.org/live-components/-/live-components-0.1.2.tgz"
   },
   "gitHead": "2287ad2a45f1f7f9cd4c9f95f78d1925f2cb5053",
   "license": "private",

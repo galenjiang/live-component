@@ -53,6 +53,7 @@ export default class Tech extends Component {
         callback(values, monitorUrl);
       });
     });
+    this.forceUpdate();
   }
 
 
@@ -186,6 +187,9 @@ export default class Tech extends Component {
                         aspect: 7 / 4,
                       },
                     }}
+                    axiosComtomed={this.props.axiosComtomed}
+                    staticVideoJJAPI={this.props.staticVideoJJAPI}
+                    qiniuUploadAPI={this.props.qiniuUploadAPI}
                   />)
                 }
               </div>
@@ -254,7 +258,7 @@ export default class Tech extends Component {
             >
               {
                 form.getFieldDecorator('specifyIdx', {
-                  initialValue: data.specifyIdx,
+                  initialValue: String(data.specifyIdx),
                 })(<Select
                   style={{ width: '250px' }}
                 >
@@ -297,6 +301,7 @@ export default class Tech extends Component {
             label="热点监测代码"
           >
             <MonitorUrl
+              ctx={'monitorUrl'}
               monitorUrlList={data.monitorUrl}
             />
           </FormItem>

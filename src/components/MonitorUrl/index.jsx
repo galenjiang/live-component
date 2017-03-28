@@ -45,7 +45,7 @@ export default class MonitorUrl extends Component {
         if (err) {
           callback({ [ctx]: err });
         } else {
-          callback({ [ctx]: values });
+          callback({ [ctx]: values.monitorUrlList });
         }
       });
     };
@@ -61,7 +61,7 @@ export default class MonitorUrl extends Component {
   addMonitorUrlItem = () => {
     const { form } = this.props;
     const monitorUrlListIndex = form.getFieldValue('monitorUrlListIndex');
-    monitorUrlListIndex.push(['all', 'view', '', true]);
+    monitorUrlListIndex.push(['web', 'click', '', true]);
     form.setFieldsValue({
       monitorUrlListIndex,
     });
@@ -101,6 +101,7 @@ export default class MonitorUrl extends Component {
     //     ios: { view: 'http://www.baidu.com' },
     //   }],
     // }],
+
 
     form.getFieldDecorator('monitorUrlListIndex', {
       initialValue: monitorUrlList,

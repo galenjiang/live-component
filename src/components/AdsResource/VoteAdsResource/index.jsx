@@ -12,6 +12,8 @@ import Flat from './VoteAdsForm/Flat';
 import Tech from './VoteAdsForm/Tech';
 import MangoCool from './VoteAdsForm/MangoCool';
 import MangoClassic from './VoteAdsForm/MangoClassic';
+import IWantBasic from './VoteAdsForm/IWantBasic';
+import IWantFlat from './VoteAdsForm/IWantFlat';
 import ResourceModal from '../../ResourceModal';
 import config from './config';
 import event from '../../../utils/event';
@@ -123,8 +125,45 @@ export default class VoteAdsResource extends Component {
    * @private
    */
   onOk = () => {
-    event.$emit('validateFields', (...args) => {
-      console.log(args);
+    const { onOk } = this.props;
+    event.$emit('validateFields', (values, monitorUrl) => {
+
+      const sortedmonitorUrl = _(monitorUrl)
+        .map((itemUrl) => {
+          const temp = _(itemUrl)
+            .toPairs()
+            .flatten()
+            .value();
+          return [temp[0], temp[1]];
+        })
+        .map((item) => {
+
+          const sencond = _(item[1])
+            .map((item) => ({
+              [item[0]]: {
+                [item[1]]: item[2],
+              },
+              admaster: item[3],
+            }));
+
+          return [
+            item[0],
+            sencond,
+          ];
+        })
+        .fromPairs()
+        .value();
+
+      onOk({
+        ...this.state.data,
+        ..._(values).omitBy('qoptionsIndex').mapValues((value, key) => {
+          if (key === 'specifyIdx') {
+            return parseInt(value);
+          }
+          return value;
+        }).value(),
+        ...sortedmonitorUrl,
+      });
     });
     // const data = _.cloneDeep(this.state.data)
 
@@ -220,7 +259,7 @@ export default class VoteAdsResource extends Component {
           />
         }
         {
-          data.style === 1
+          (data.style === 1)
           && <Flat
             {...this.props}
             data={data}
@@ -243,6 +282,21 @@ export default class VoteAdsResource extends Component {
         {
           data.style === 102
           && <MangoClassic
+            {...this.props}
+            data={data}
+          />
+        }
+        {
+          data.style === 10200
+          && <IWantBasic
+            {...this.props}
+            data={data}
+          />
+        }
+
+        {
+          data.style === 10201
+          && <IWantFlat
             {...this.props}
             data={data}
           />

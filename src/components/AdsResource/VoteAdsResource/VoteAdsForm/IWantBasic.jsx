@@ -23,7 +23,7 @@ let monitorUrl = [];
 
 @formCreate()
 @CSSModule(style)
-export default class Flat extends Component {
+export default class IWantBasic extends Component {
   constructor(props) {
     super();
     this.state = {
@@ -162,11 +162,11 @@ export default class Flat extends Component {
         <Row>
           <Col span={8}>
             <FormItem
-              {...formItemLayout}
+              {...notRequiredFormItemLayout}
               label="广告图片"
             >
               <div
-                style={{ width: '200px', height: `${(200 / 7) * 4}px` }}
+                style={{ width: '200px', height: `${(200 / 106) * 75}px` }}
               >
                 {
                   form.getFieldDecorator('titlePic', {
@@ -184,7 +184,7 @@ export default class Flat extends Component {
                       crop: true,
                       disabled: false,
                       cropOptions: {
-                        aspect: 7 / 4,
+                        aspect: 106 / 75,
                       },
                     }}
                     axiosComtomed={this.props.axiosComtomed}
@@ -295,7 +295,7 @@ export default class Flat extends Component {
         <Row>
           <FormItem
             {...notRequiredVoteLayout}
-            label="广告监测代码"
+            label="监测代码"
           >
             <MonitorUrl
               ctx={'monitorUrl'}
@@ -360,40 +360,6 @@ export default class Flat extends Component {
                         type="delete"
                       />
                     </div>
-                    <FormItem
-                      {...qoptionsFormItemLayout}
-                      wrapperCol={{ span: 12 }}
-                      label="投票图片"
-                    >
-                      <div
-                        style={{ width: '200px', height: `${(200 / 8) * 7}px` }}
-                      >
-                        {
-                          form.getFieldDecorator(`qoptions[${index}].pic`, {
-                            valuePropName: 'fileURL',
-                            trigger: 'onUploadChange',
-                            initialValue: data.qoptions[index].pic,
-                            rules: [{
-                              type: 'string',
-                              pattern: reg.httpRegWithProtocol,
-                              required: true,
-                              message: '请输入正确的投票图片',
-                            }],
-                          })(<ImageUploadCustomed
-                            {...{
-                              crop: true,
-                              disabled: false,
-                              cropOptions: {
-                                aspect: 8 / 7,
-                              },
-                            }}
-                            axiosComtomed={this.props.axiosComtomed}
-                            staticVideoJJAPI={this.props.staticVideoJJAPI}
-                            qiniuUploadAPI={this.props.qiniuUploadAPI}
-                          />)
-                        }
-                      </div>
-                    </FormItem>
                     <FormItem
                       {...qoptionsFormItemLayout}
                       label="选项标题"

@@ -23,7 +23,7 @@ let monitorUrl = [];
 
 @formCreate()
 @CSSModule(style)
-export default class Flat extends Component {
+export default class IWantFlat extends Component {
   constructor(props) {
     super();
     this.state = {
@@ -162,11 +162,11 @@ export default class Flat extends Component {
         <Row>
           <Col span={8}>
             <FormItem
-              {...formItemLayout}
+              {...notRequiredFormItemLayout}
               label="广告图片"
             >
               <div
-                style={{ width: '200px', height: `${(200 / 7) * 4}px` }}
+                style={{ width: '200px', height: `${(200 / 106) * 75}px` }}
               >
                 {
                   form.getFieldDecorator('titlePic', {
@@ -176,7 +176,6 @@ export default class Flat extends Component {
                     rules: [{
                       type: 'string',
                       pattern: reg.httpRegWithProtocol,
-                      required: true,
                       message: '请输入正确的广告图片',
                     }],
                   })(<ImageUploadCustomed
@@ -184,7 +183,7 @@ export default class Flat extends Component {
                       crop: true,
                       disabled: false,
                       cropOptions: {
-                        aspect: 7 / 4,
+                        aspect: 106 / 75,
                       },
                     }}
                     axiosComtomed={this.props.axiosComtomed}
@@ -295,7 +294,7 @@ export default class Flat extends Component {
         <Row>
           <FormItem
             {...notRequiredVoteLayout}
-            label="广告监测代码"
+            label="监测代码"
           >
             <MonitorUrl
               ctx={'monitorUrl'}
@@ -366,7 +365,7 @@ export default class Flat extends Component {
                       label="投票图片"
                     >
                       <div
-                        style={{ width: '200px', height: `${(200 / 8) * 7}px` }}
+                        style={{ width: '200px', height: `${(200 / 108) * 119}px` }}
                       >
                         {
                           form.getFieldDecorator(`qoptions[${index}].pic`, {
@@ -384,7 +383,7 @@ export default class Flat extends Component {
                               crop: true,
                               disabled: false,
                               cropOptions: {
-                                aspect: 8 / 7,
+                                aspect: 108 / 119,
                               },
                             }}
                             axiosComtomed={this.props.axiosComtomed}

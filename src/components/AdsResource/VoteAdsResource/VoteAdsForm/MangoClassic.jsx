@@ -53,6 +53,7 @@ export default class MangoClassic extends Component {
         callback(values, monitorUrl);
       });
     });
+    this.forceUpdate();
   }
 
 
@@ -192,6 +193,10 @@ export default class MangoClassic extends Component {
                         aspect: 480 / 160,
                       },
                     }}
+
+                    axiosComtomed={this.props.axiosComtomed}
+                    staticVideoJJAPI={this.props.staticVideoJJAPI}
+                    qiniuUploadAPI={this.props.qiniuUploadAPI}
                   />)
                 }
               </div>
@@ -260,7 +265,7 @@ export default class MangoClassic extends Component {
             >
               {
                 form.getFieldDecorator('specifyIdx', {
-                  initialValue: data.specifyIdx,
+                  initialValue: String(data.specifyIdx),
                 })(<Select
                   style={{ width: '250px' }}
                 >
@@ -303,6 +308,7 @@ export default class MangoClassic extends Component {
             label="热点监测代码"
           >
             <MonitorUrl
+              ctx={'monitorUrl'}
               monitorUrlList={data.monitorUrl}
             />
           </FormItem>
@@ -332,6 +338,9 @@ export default class MangoClassic extends Component {
                       aspect: 600 / 240,
                     },
                   }}
+                  axiosComtomed={this.props.axiosComtomed}
+                  staticVideoJJAPI={this.props.staticVideoJJAPI}
+                  qiniuUploadAPI={this.props.qiniuUploadAPI}
                 />)
               }
             </div>
@@ -342,6 +351,7 @@ export default class MangoClassic extends Component {
             label="广告监测代码"
           >
             <MonitorUrl
+              ctx={'votePicMonitorUrl'}
               monitorUrlList={data.votePicMonitorUrl}
             />
           </FormItem>

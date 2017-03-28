@@ -7,7 +7,7 @@ import { message } from 'antd';
 import ImageUpload from '../ImageUpload';
 // import { liveUploadApi, liveCustomerApi } from '../../api';
 // import { staticVideoJJAPI, qiniuUploadAPI } from '../../config';
-import axiosComtomed from '../../axios/axiosCustomed';
+import axios from '../../axios/axiosCustomed';
 import './style.less';
 
 const allowFileType = ['image/jpeg', 'image/png', 'image/gif'];
@@ -22,7 +22,7 @@ export default class ImageUploadCustomed extends Component {
   }
 
   static defaultProps = {
-    axiosComtomed,
+    axiosComtomed: axios,
     staticVideoJJAPI: 'http://static.cdn.videojj.com',
     qiniuUploadAPI: 'http://up.qiniu.com',
   }
@@ -65,6 +65,7 @@ export default class ImageUploadCustomed extends Component {
   uploadFileByBase64 = (base64) => {
     const { staticVideoJJAPI, qiniuUploadAPI, axiosComtomed } = this.props;
     // liveUploadApi.liveUploadApiToken()
+
     return axiosComtomed.get('api/common/upload/image')
       .then(data => new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();

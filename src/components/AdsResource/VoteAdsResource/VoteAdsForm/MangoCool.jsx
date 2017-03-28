@@ -53,6 +53,7 @@ export default class MangoCool extends Component {
         callback(values, monitorUrl);
       });
     });
+    this.forceUpdate();
   }
 
 
@@ -192,6 +193,9 @@ export default class MangoCool extends Component {
                         aspect: 300 / 100,
                       },
                     }}
+                    axiosComtomed={this.props.axiosComtomed}
+                    staticVideoJJAPI={this.props.staticVideoJJAPI}
+                    qiniuUploadAPI={this.props.qiniuUploadAPI}
                   />)
                 }
               </div>
@@ -260,7 +264,7 @@ export default class MangoCool extends Component {
             >
               {
                 form.getFieldDecorator('specifyIdx', {
-                  initialValue: data.specifyIdx,
+                  initialValue: String(data.specifyIdx),
                 })(<Select
                   style={{ width: '250px' }}
                 >
@@ -303,6 +307,7 @@ export default class MangoCool extends Component {
             label="热点监测代码"
           >
             <MonitorUrl
+              ctx={'monitorUrl'}
               monitorUrlList={data.monitorUrl}
             />
           </FormItem>
@@ -332,6 +337,9 @@ export default class MangoCool extends Component {
                       aspect: 250 / 100,
                     },
                   }}
+                  axiosComtomed={this.props.axiosComtomed}
+                  staticVideoJJAPI={this.props.staticVideoJJAPI}
+                  qiniuUploadAPI={this.props.qiniuUploadAPI}
                 />)
               }
             </div>
@@ -342,6 +350,7 @@ export default class MangoCool extends Component {
             label="广告监测代码"
           >
             <MonitorUrl
+              ctx={'votePicMonitorUrl'}
               monitorUrlList={data.votePicMonitorUrl}
             />
           </FormItem>
@@ -389,6 +398,9 @@ export default class MangoCool extends Component {
                                 aspect: 14 / 15,
                               },
                             }}
+                            axiosComtomed={this.props.axiosComtomed}
+                            staticVideoJJAPI={this.props.staticVideoJJAPI}
+                            qiniuUploadAPI={this.props.qiniuUploadAPI}
                           />)
                         }
                       </div>

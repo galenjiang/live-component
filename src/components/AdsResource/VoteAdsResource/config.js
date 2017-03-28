@@ -564,6 +564,17 @@ const config = [
         ]
       },
     }
-  }
-]
-export default config
+  },
+  {
+    type: 'IWant基础风',
+    skin: 'http://o6p1020jg.bkt.clouddn.com/static/voteball/basic-skin.png',
+    style: 10200,
+  },
+
+  {
+    type: 'IWant扁平风',
+    skin: 'http://o6p1020jg.bkt.clouddn.com/static/voteball/flat-skin.png',
+    style: 10201,
+  },
+];
+export default config;

@@ -50,9 +50,12 @@ export default class Basic extends Component {
         }
 
         if (monitorErr) return false;
+
         callback(values, monitorUrl);
       });
     });
+
+    this.forceUpdate();
   }
 
 
@@ -215,7 +218,7 @@ export default class Basic extends Component {
         >
           {
             form.getFieldDecorator('specifyIdx', {
-              initialValue: data.specifyIdx,
+              initialValue: String(data.specifyIdx),
             })(<Select
               style={{ width: '250px' }}
             >

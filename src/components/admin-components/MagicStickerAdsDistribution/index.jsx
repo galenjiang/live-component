@@ -41,6 +41,13 @@ export default class MagicStickerAdsDistribution extends Component {
       loading: false,
       data: _.defaults(data, dataConfig),
     };
+
+    this.initialValue = _(props.data.platforms)
+      .map(item => {
+        const temp = _(props.platformList).find(value => value._id === item)
+        return `${temp._id}-${temp.username}-${temp.email}`
+      })
+      .value();
   }
 
   onOk = () => {
@@ -49,7 +56,13 @@ export default class MagicStickerAdsDistribution extends Component {
       if (err) {
         return false;
       }
-      onOk(values);
+      debugger
+      const sortedValues = _(values.platforms)
+        .map(item => {
+          return item.split('-')[0]
+        })
+        .value();
+      onOk({ platforms: sortedValues });
     });
   }
 
@@ -78,7 +91,7 @@ export default class MagicStickerAdsDistribution extends Component {
             >
               {
                 form.getFieldDecorator('platforms', {
-                  initialValue: data.platforms,
+                  initialValue: this.initialValue,
                   rules: [{
                     type: 'array',
                     required: true,
@@ -88,9 +101,9 @@ export default class MagicStickerAdsDistribution extends Component {
                   multiple
                 >
                   {
-                    platformList.map(item => <Option
-                      key={item._id}
-                      value={item._id}
+                    platformList.map((item, index) => <Option
+                      key={`${item._id}`}
+                      value={`${item._id}-${item.username}-${item.email}`}
                     >
                       {`${item.username}: ${item.email}`}
                     </Option>)
