@@ -107,6 +107,9 @@ export default class ImageGroup extends Component {
                 key={item.key}
               >
                 <ImageUploadCustomed
+                  axiosComtomed={this.props.axiosComtomed}
+                  staticVideoJJAPI={this.props.staticVideoJJAPI}
+                  qiniuUploadAPI={this.props.qiniuUploadAPI}
                   {...props.cropConfig}
                   fileURL={item.value}
                   onDelete={() => deleteImageItem(index)}

@@ -22,8 +22,6 @@ const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
 
-let monitorUrl = [];
-
 @formCreate()
 @CSSModule(style)
 export default class Carousel extends Component {
@@ -38,13 +36,16 @@ export default class Carousel extends Component {
     const { form } = this.props;
     event.$on('validateFields', (callback) => {
       // before get monitorUrl value, clear array
-      monitorUrl = [];
+      let monitorUrl = {};
       let monitorErr = null;
       event.$emit('validateMonitorUrl', (data) => {
         if (data instanceof Error) {
           monitorErr = data;
         }
-        monitorUrl.push(data);
+        monitorUrl = {
+          ...monitorUrl,
+          ...data,
+        };
       });
 
       form.validateFields((err, values) => {
@@ -70,7 +71,7 @@ export default class Carousel extends Component {
     event.$clear('validateFields');
   }
 
-  setImageGroupField(value) {
+  setImageGroupField = (value) => {
     const { form } = this.props;
     form.setFieldsValue({
       cover: value.map(item => item.value),
@@ -78,8 +79,9 @@ export default class Carousel extends Component {
   }
 
   render() {
-    const { form } = this.props;
+    const { form, disabled } = this.props;
     const { data } = this.state;
+    const { setImageGroupField } = this;
     const prefix = 'sidebar-ads-resource';
     const colorSelectList = ['#4a90ae', '#f5a623', '#46b3b7', '#ff3b6b'];
     const formItemLayout = {
@@ -108,6 +110,7 @@ export default class Carousel extends Component {
                   message: '请输入侧边栏名称',
                 }],
               })(<Input
+                disabled={disabled}
                 style={{ width: '320px' }}
               />)
             }
@@ -128,9 +131,12 @@ export default class Carousel extends Component {
                     message: '请上传ICON',
                   }],
                 })(<ImageUploadCustomed
+                  axiosComtomed={this.props.axiosComtomed}
+                  staticVideoJJAPI={this.props.staticVideoJJAPI}
+                  qiniuUploadAPI={this.props.qiniuUploadAPI}
+                  disabled={disabled}
                   {...{
                     crop: true,
-                    disabled: false,
                     cropOptions: {
                       aspect: 1,
                     },
@@ -146,16 +152,19 @@ export default class Carousel extends Component {
             <Row>
               <ImageGroup
                 images={data.cover.map(item => item.src)}
-                onChange={(value) => console.log('ImageGroup changed', value)}
+                onChange={setImageGroupField}
                 // onChange={value => __setFields(null, 'cover', value.map(item => {
                 //  return {
                 //    fileType: 'image',
                 //    src: item
                 //  }
                 // }))}
+                axiosComtomed={this.props.axiosComtomed}
+                staticVideoJJAPI={this.props.staticVideoJJAPI}
+                qiniuUploadAPI={this.props.qiniuUploadAPI}
+                disabled={disabled}
                 cropConfig={{
                   crop: true,
-                  disabled: false,
                   cropOptions: {
                     aspect: 1,
                   },
@@ -184,6 +193,7 @@ export default class Carousel extends Component {
                   message: '请输入正确的图片外链',
                 }],
               })(<Input
+                disabled={disabled}
                 style={{ width: '320px' }}
                 placeholder="请输入图片跳转的地址"
               />)
@@ -194,6 +204,8 @@ export default class Carousel extends Component {
             label="添加监测代码"
           >
             <MonitorUrl
+              disabled={disabled}
+              ctx={'coverLinkMonitorUrl'}
               monitorUrlList={data.coverLinkMonitorUrl}
             />
           </FormItem>
@@ -210,6 +222,7 @@ export default class Carousel extends Component {
                   required: true,
                 }],
               })(<ColorSelect
+                disabled={disabled}
                 colors={colorSelectList}
               />)
             }
@@ -230,6 +243,7 @@ export default class Carousel extends Component {
                   message: '标题文字不能大于10个字符',
                 }],
               })(<Input
+                disabled={disabled}
                 style={{ width: '320px' }}
                 placeholder="请输入标题文字"
               />)
@@ -251,6 +265,7 @@ export default class Carousel extends Component {
                   message: '说明文字不能大于24个字符',
                 }],
               })(<Input
+                disabled={disabled}
                 style={{ width: '320px' }}
                 placeholder="请输入说明文字"
               />)
@@ -272,6 +287,7 @@ export default class Carousel extends Component {
                   message: '按钮文字不能大于4个字符',
                 }],
               })(<Input
+                disabled={disabled}
                 style={{ width: '320px' }}
                 placeholder="请输入按钮文字"
               />)
@@ -293,6 +309,7 @@ export default class Carousel extends Component {
                   message: '请输入正确的按钮外链',
                 }],
               })(<Input
+                disabled={disabled}
                 style={{ width: '320px' }}
                 placeholder="请输入按钮文字"
               />)
@@ -303,6 +320,8 @@ export default class Carousel extends Component {
             label="监测代码"
           >
             <MonitorUrl
+              disabled={disabled}
+              ctx={'linkBtnMonitorUrl'}
               monitorUrlList={data.linkBtnMonitorUrl}
             />
           </FormItem>
@@ -313,7 +332,9 @@ export default class Carousel extends Component {
                   valuePropName: 'checked',
                   initialValue: data.needPraised,
                   rules: [],
-                })(<Checkbox>
+                })(<Checkbox
+                  disabled={disabled}
+                >
                   是否需要点赞功能
                 </Checkbox>)
               }

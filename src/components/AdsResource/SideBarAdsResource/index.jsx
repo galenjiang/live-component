@@ -63,8 +63,33 @@ export default class SidebarModal extends Component {
   }
 
   onOk = () => {
-    event.$emit('validateFields', (...args) => {
-      console.log(args);
+    const { onOk } = this.props;
+    event.$emit('validateFields', (values, monitorUrl) => {
+      const sortedData = _(values)
+        .mapValues((item, key) => {
+          if (key === 'cover') {
+            return _(item).map((el) => {
+              return { fileType: 'image', src: el };
+            }).value();
+          }
+          return item;
+        })
+        .value();
+      _(monitorUrl).forEach((item, key) => {
+        const monitor = _(item)
+          .map(el => ({
+            [el[0]]: {
+              [el[1]]: el[2],
+            },
+            admaster: el[3],
+          }))
+          .value();
+        _.set(sortedData, key, monitor);
+      });
+      onOk({
+        ...this.state.data,
+        ...sortedData,
+      });
     });
     // const data = _.cloneDeep(this.state.data)
     // let result = validate(data, _.find(sidebarConfig, item => item.style === data.style).validate)

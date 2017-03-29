@@ -16,7 +16,6 @@ import style from './style.M.less';
 
 const { reg, decorators: { formCreate } } = utils;
 const FormItem = Form.Item;
-let monitorUrl = [];
 
 @formCreate()
 @CSSModule(style)
@@ -26,29 +25,6 @@ export default class VideoAdsResource extends Component {
 
     const { data } = props;
 
-    // const defaultVideoList = [
-    //   {
-    //     source: '',
-    //     link: '',
-    //     ex: 10,
-    //     monitorUrl: [
-    //       {
-    //         web: {
-    //           view: '',
-    //           click: ''
-    //         },
-    //         ios: {
-    //           view: '',
-    //           click: ''
-    //         },
-    //         android: {
-    //           view: '',
-    //           click: ''
-    //         }
-    //       }
-    //     ]
-    //   }
-    // ]
     const dataConfig = {
       __t: 'VideoAds',
       style: 0,
@@ -83,13 +59,16 @@ export default class VideoAdsResource extends Component {
   onOk = () => {
     const { form, onOk } = this.props;
 
-    monitorUrl = [];
+    let monitorUrl = {};
     let monitorErr = null;
     event.$emit('validateMonitorUrl', (data) => {
       if (data instanceof Error) {
         monitorErr = data;
       }
-      monitorUrl.push(data);
+      monitorUrl = {
+        ...monitorUrl,
+        ...data,
+      };
     });
 
     form.validateFields((err, values) => {
@@ -98,8 +77,27 @@ export default class VideoAdsResource extends Component {
       }
 
       if (monitorErr) return false;
-      onOk(values, monitorUrl);
+
+      const sortedData = _(values).omit('videoListIndex').value();
+      _(monitorUrl).forEach((item, key) => {
+        const monitor = _(item)
+          .map(el => ({
+            [el[0]]: {
+              [el[1]]: el[2],
+            },
+            admaster: el[3],
+          }))
+          .value();
+        _.set(sortedData, key, monitor);
+      });
+
+      onOk({
+        ...this.state.data,
+        ...sortedData,
+      });
     });
+
+
     //   let formData = {}
     //   formData.__t = 'VideoAds'
     //   const { videoList } = this.state.data
@@ -269,7 +267,7 @@ export default class VideoAdsResource extends Component {
   render() {
     const prefix = 'video-ads-resource';
 
-    const { isCreated, onCancel, form } = this.props;
+    const { isCreated, onCancel, form, disabled } = this.props;
     const { loading, data } = this.state;
     const { onOk, addVideo, removeVideo } = this;
 
@@ -322,6 +320,7 @@ export default class VideoAdsResource extends Component {
                     message: '广告标题不能为空',
                   }],
                 })(<Input
+                  disabled={disabled}
                   placeholder="请输入广告标题"
                   style={{ width: '250px' }}
                 />)
@@ -341,6 +340,7 @@ export default class VideoAdsResource extends Component {
                     message: '视频总时间不合法',
                   }],
                 })(<InputNumber
+                  disabled={disabled}
                   min={0}
                 />)
               }
@@ -355,7 +355,9 @@ export default class VideoAdsResource extends Component {
                       valuePropName: 'checked',
                       initialValue: data.isPiP,
                       rules: [],
-                    })(<Checkbox>
+                    })(<Checkbox
+                      disabled={disabled}
+                    >
                       使用画中画功能
                     </Checkbox>)
                   }
@@ -370,7 +372,9 @@ export default class VideoAdsResource extends Component {
                           valuePropName: 'checked',
                           initialValue: data.allowClose,
                           rules: [],
-                        })(<Checkbox>
+                        })(<Checkbox
+                          disabled={disabled}
+                        >
                           用户可关闭
                         </Checkbox>)
                       }
@@ -389,7 +393,7 @@ export default class VideoAdsResource extends Component {
                             }],
                           })(<InputNumber
                             min={0}
-                            disabled={!form.getFieldValue('allowClose')}
+                            disabled={disabled || !form.getFieldValue('allowClose')}
                             // onInput={(e) => {
                             //   setFieldsValue({
                             //     'closeTime': parseInt(!/\d+/.test(e.target.value) ? 0 : /\d+/.exec(e.target.value)[0])
@@ -412,7 +416,9 @@ export default class VideoAdsResource extends Component {
                           valuePropName: 'checked',
                           initialValue: data.usePlayerVolume,
                           rules: [],
-                        })(<Checkbox>
+                        })(<Checkbox
+                          disabled={disabled}
+                        >
                           使用系统播放器音量
                         </Checkbox>)
                       }
@@ -426,7 +432,7 @@ export default class VideoAdsResource extends Component {
                 && <Row>
                   <Col push={6} span={18}>
                     <div style={{ display: 'inline-block' }}>
-                      播放音量：
+                      <span style={{ verticalAlign: 'middle', lineHeight: '32px' }}>播放音量：</span>
                       <FormItem style={{ display: 'inline-block' }}>
                         {
                           form.getFieldDecorator('volume', {
@@ -439,11 +445,11 @@ export default class VideoAdsResource extends Component {
                           })(<InputNumber
                             min={0}
                             max={100}
-                            disabled={form.getFieldValue('usePlayerVolume')}
+                            disabled={disabled || form.getFieldValue('usePlayerVolume')}
                           />)
                         }
                       </FormItem>
-                      %
+                      <span style={{ verticalAlign: 'middle', lineHeight: '32px' }}> %</span>
                     </div>
                   </Col>
                 </Row>
@@ -498,7 +504,10 @@ export default class VideoAdsResource extends Component {
                               pattern: reg.httpRegWithProtocol,
                               message: '视频地址不合法',
                             }],
-                          })(<Input style={{ width: '400px' }} />)
+                          })(<Input
+                            disabled={disabled}
+                            style={{ width: '400px' }}
+                          />)
                         }
                       </FormItem>
                       <FormItem
@@ -517,7 +526,10 @@ export default class VideoAdsResource extends Component {
                               pattern: reg.httpRegWithProtocol,
                               message: '视频外链不合法',
                             }],
-                          })(<Input style={{ width: '400px' }} />)
+                          })(<Input
+                            style={{ width: '400px' }}
+                            disabled={disabled}
+                          />)
                         }
                       </FormItem>
 
@@ -535,6 +547,7 @@ export default class VideoAdsResource extends Component {
                               message: '视频时间不合法',
                             }],
                           })(<InputNumber
+                            disabled={disabled}
                             min={0}
                           />)
                         }
@@ -545,6 +558,8 @@ export default class VideoAdsResource extends Component {
                         label="监测代码"
                       >
                         <MonitorUrl
+                          disabled={disabled}
+                          ctx={`videoList[${index}].monitorUrl`}
                           monitorUrlList={data.videoList[index].monitorUrl}
                         />
                       </FormItem>

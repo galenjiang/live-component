@@ -1,5 +1,7 @@
 // official
 import React, { Component, PropTypes } from 'react';
+import CSSModule from 'react-css-modules';
+
 
 // 3rd-part
 import { Form, Button, Icon, Input, Checkbox, Select } from 'antd';
@@ -7,7 +9,7 @@ import _ from 'lodash';
 
 // mine
 import utils from '../../utils';
-import './style.less';
+import style from './style.M.less';
 import constant from '../../constants';
 import event from '../../utils/event';
 
@@ -17,33 +19,38 @@ const { monitor: { agentList, detectionList } } = constant;
 const { reg, decorators: { formCreate } } = utils;
 
 @formCreate()
+@CSSModule(style)
 export default class MonitorUrl extends Component {
+  static propTypes = {
+    disabled: PropTypes.bool,
+    monitorUrlList: PropTypes.array,
+  }
+
+  static defaultProps = {
+    disabled: false,
+    monitorUrlList: [],
+  }
+
   constructor(props) {
     super();
-    let { monitorUrlList } = props;
-
-    if (!monitorUrlList) {
-      monitorUrlList = [];
-    }
+    const { monitorUrlList } = props;
 
     this.state = {
       monitorUrl: monitorUrlList.map((item) => {
         item.key = _.uniqueId();
         return item;
       }),
+      show: true,
     };
   }
 
-  static propTypes = {
-    monitorUrlList: PropTypes.array.isRequired,
-  }
 
   componentDidMount() {
     const { form, ctx } = this.props;
     this.eventEmitter = (callback) => {
       form.validateFields((err, values) => {
         if (err) {
-          callback({ [ctx]: err });
+          callback(new Error());
         } else {
           callback({ [ctx]: values.monitorUrlList });
         }
@@ -65,6 +72,9 @@ export default class MonitorUrl extends Component {
     form.setFieldsValue({
       monitorUrlListIndex,
     });
+    this.setState({
+      show: true,
+    })
   }
 
   removeMonitorUrlItem = (index) => {
@@ -80,9 +90,15 @@ export default class MonitorUrl extends Component {
     });
   }
 
+  toggleMonitor = () => {
+    this.setState({
+      show: !this.state.show,
+    });
+  }
+
   render() {
-    const { monitorUrlList, form } = this.props;
-    const { removeMonitorUrlItem, addMonitorUrlItem } = this;
+    const { monitorUrlList, form, disabled } = this.props;
+    const { removeMonitorUrlItem, addMonitorUrlItem, toggleMonitor } = this;
 
     const prefix = 'monitor-url';
 
@@ -109,12 +125,24 @@ export default class MonitorUrl extends Component {
 
 
     return (
-      <div className={prefix}>
+      <div styleName={prefix}>
+        {
+          !disabled
+          && <Button
+            type="primary"
+            onClick={addMonitorUrlItem}
+          >
+            添加监测代码
+          </Button>
+        }
         <Button
+          style={{ marginLeft: '10px' }}
           type="primary"
-          onClick={addMonitorUrlItem}
+          onClick={toggleMonitor}
         >
-          添加监测代码
+          {
+            this.state.show ? '隐藏' : '显示'
+          }
         </Button>
         {/*
           form.getFieldDecorator(`monitorUrlList`, {
@@ -123,23 +151,26 @@ export default class MonitorUrl extends Component {
           })(<Input />)
           */}
         {
-          form.getFieldValue('monitorUrlListIndex').length > 0
+          (form.getFieldValue('monitorUrlListIndex').length > 0 && this.state.show)
           && <div
-            className={`${prefix}-list-container`}
+            styleName={`${prefix}-list-container`}
           >
             {
               form.getFieldValue('monitorUrlListIndex').map((item, index) => <div
-                className={`${prefix}-item`}
+                styleName={`${prefix}-item`}
                 key={index}
               >
-                <a
-                  onClick={() => removeMonitorUrlItem(index)}
-                >
-                  <Icon
-                    type="minus-circle-o"
-                    className={`${prefix}-item-unit`}
-                  />
-                </a>
+                {
+                  !disabled
+                  && <a
+                    onClick={() => removeMonitorUrlItem(index)}
+                  >
+                    <Icon
+                      type="minus-circle-o"
+                      styleName={`${prefix}-item-unit`}
+                    />
+                  </a>
+                }
 
                 {
                   form.getFieldDecorator(`monitorUrlList[${index}][0]`, {
@@ -150,8 +181,9 @@ export default class MonitorUrl extends Component {
                       message: '请输入监测平台',
                     }],
                   })(<Select
-                    className={`${prefix}-item-unit`}
+                    styleName={`${prefix}-item-unit`}
                     style={{ width: '80px' }}
+                    disabled={disabled}
                   >
                     {
                       agentList.map(item => <Option
@@ -172,8 +204,9 @@ export default class MonitorUrl extends Component {
                       message: '请输入监测方式',
                     }],
                   })(<Select
-                    className={`${prefix}-item-unit`}
+                    styleName={`${prefix}-item-unit`}
                     style={{ width: '80px' }}
+                    disabled={disabled}
                   >
                     {
                       detectionList.map(item => <Option
@@ -186,7 +219,7 @@ export default class MonitorUrl extends Component {
                   </Select>)
                 }
                 <FormItem
-                  className={`${prefix}-item-unit`}
+                  styleName={`${prefix}-item-unit`}
                   style={{ display: 'inline-block', width: '150px' }}
                 >
                   {
@@ -201,6 +234,7 @@ export default class MonitorUrl extends Component {
                         message: '请输入监测地址',
                       }],
                     })(<Input
+                      disabled={disabled}
                       placeholder="请输入监测地址"
                     />)
                   }
@@ -210,7 +244,8 @@ export default class MonitorUrl extends Component {
                     initialValue: monitorUrlList[index][3],
                     valuePropName: 'checked',
                   })(<Checkbox
-                    className={`${prefix}-item-unit`}
+                    styleName={`${prefix}-item-unit`}
+                    disabled={disabled}
                   >
                     移动设备回传
                   </Checkbox>)

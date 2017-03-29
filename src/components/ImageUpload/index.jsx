@@ -167,7 +167,7 @@ export default class ImageUpload extends Component {
         style={{ height: typeof height === Number ? `${height}px` : height }}
       >
         <div className={`${prefix}-view`}>
-          {
+          {/*
             disabled
               ? <div className={`${prefix}-disabled`}>
                 <div className={`${prefix}-disabled-content`}>
@@ -175,50 +175,54 @@ export default class ImageUpload extends Component {
                   <p>当前不允许上传图片</p>
                 </div>
               </div>
-              : <div className={`${prefix}-show`}>
-                <div
-                  className={`${prefix}-view-mask-container`}
-                  style={picViewStyles}
+              :
+          */}
+          <div className={`${prefix}-show`}>
+            <div
+              className={`${prefix}-view-mask-container`}
+              style={picViewStyles}
+            >
+              {
+                !disabled
+                && <div
+                  className={`${prefix}-view-mask ${loading ? 'loading' : ' '}`}
                 >
-                  <div
-                    className={`${prefix}-view-mask ${loading ? 'loading' : ' '}`}
-                  >
-                    {
-                      isExistFile && loading
-                      && <span className={`${prefix}-loading`}>上传中... <Icon type="loading" /></span>
-                    }
-                    {
-                      !loading
-                      && <Button type="primary" onClick={deletePicUpload}>删除</Button>
-                    }
-                    {
-                      !loading
-                      && <Button type="primary" onClick={() => this.__editPicUploader()}>编辑</Button>
-                    }
-                  </div>
+                  {
+                    isExistFile && loading
+                    && <span className={`${prefix}-loading`}>上传中... <Icon type="loading" /></span>
+                  }
+                  {
+                    !loading
+                    && <Button type="primary" onClick={deletePicUpload}>删除</Button>
+                  }
+                  {
+                    !loading
+                    && <Button type="primary" onClick={() => this.__editPicUploader()}>编辑</Button>
+                  }
                 </div>
-                <div
-                  className={`${prefix}-drag-area`}
-                  ref="dragArea"
-                  style={isExistFile ? { display: 'none' } : {}}
-                >
-                  <Upload.Dragger
-                    showUploadList={false}
-                    multipe={false}
-                    beforeUpload={e => this.beforeUpload(e)}
-                  >
-                    <Icon type="plus" />
-                  </Upload.Dragger>
-                </div>
-                {
-                  !isExistFile && loading
-                  && <span className={`${prefix}-loading`}>
-                    上传中
-                    <Icon type="loading" />
-                  </span>
-                }
-              </div>
-          }
+              }
+            </div>
+            <div
+              className={`${prefix}-drag-area`}
+              ref="dragArea"
+              style={isExistFile ? { display: 'none' } : {}}
+            >
+              <Upload.Dragger
+                showUploadList={false}
+                multipe={false}
+                beforeUpload={e => this.beforeUpload(e)}
+              >
+                <Icon type="plus" />
+              </Upload.Dragger>
+            </div>
+            {
+              !isExistFile && loading
+              && <span className={`${prefix}-loading`}>
+                上传中
+                <Icon type="loading" />
+              </span>
+            }
+          </div>
         </div>
         {
           ImageCropModalVisible

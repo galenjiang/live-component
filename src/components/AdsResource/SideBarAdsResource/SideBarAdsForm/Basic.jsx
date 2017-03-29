@@ -20,8 +20,6 @@ const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
 
-let monitorUrl = [];
-
 @formCreate()
 @CSSModule(style)
 export default class Basic extends Component {
@@ -36,13 +34,16 @@ export default class Basic extends Component {
     const { form } = this.props;
     event.$on('validateFields', (callback) => {
       // before get monitorUrl value, clear array
-      monitorUrl = [];
+      let monitorUrl = {};
       let monitorErr = null;
       event.$emit('validateMonitorUrl', (data) => {
         if (data instanceof Error) {
           monitorErr = data;
         }
-        monitorUrl.push(data);
+        monitorUrl = {
+          ...monitorUrl,
+          ...data,
+        };
       });
 
       form.validateFields((err, values) => {
@@ -51,6 +52,8 @@ export default class Basic extends Component {
         }
 
         if (monitorErr) return false;
+
+
         callback(values, monitorUrl);
       });
     });
@@ -62,7 +65,7 @@ export default class Basic extends Component {
   }
 
   render() {
-    const { form } = this.props;
+    const { form, disabled } = this.props;
     const { data } = this.state;
     const prefix = 'sidebar-ads-resource';
     const colorSelectList = ['#4a90ae', '#f5a623', '#46b3b7', '#ff3b6b'];
@@ -88,6 +91,7 @@ export default class Basic extends Component {
                   message: '侧边栏名称不能为空',
                 }],
               })(<Input
+                disabled={disabled}
                 style={{ width: '320px' }}
               />)
             }
@@ -108,9 +112,12 @@ export default class Basic extends Component {
                     message: '请上传ICON',
                   }],
                 })(<ImageUploadCustomed
+                  axiosComtomed={this.props.axiosComtomed}
+                  staticVideoJJAPI={this.props.staticVideoJJAPI}
+                  qiniuUploadAPI={this.props.qiniuUploadAPI}
+                  disabled={disabled}
                   {...{
                     crop: true,
-                    disabled: false,
                     cropOptions: {
                       aspect: 1,
                     },
@@ -127,16 +134,20 @@ export default class Basic extends Component {
               style={{ width: '200px', height: '200px' }}
             >
               {
-                form.getFieldDecorator('cover', {
+                form.getFieldDecorator('cover[0]', {
                   valuePropName: 'fileURL',
                   trigger: 'onUploadChange',
-                  initialValue: data.icon,
+                  initialValue: data.cover[0].src,
                   rules: [{
                     type: 'string',
                     required: true,
                     message: '请上传图片',
                   }],
                 })(<ImageUploadCustomed
+                  axiosComtomed={this.props.axiosComtomed}
+                  staticVideoJJAPI={this.props.staticVideoJJAPI}
+                  qiniuUploadAPI={this.props.qiniuUploadAPI}
+                  disabled={disabled}
                   {...{
                     crop: true,
                     disabled: false,
@@ -189,6 +200,7 @@ export default class Basic extends Component {
                   message: '图片外链不正确',
                 }],
               })(<Input
+                disabled={disabled}
                 style={{ width: '320px' }}
                 placeholder="请输入图片跳转的地址"
               />)
@@ -199,6 +211,8 @@ export default class Basic extends Component {
             label="图片外链监测代码"
           >
             <MonitorUrl
+              disabled={disabled}
+              ctx={'coverLinkMonitorUrl'}
               monitorUrlList={data.coverLinkMonitorUrl}
             />
           </FormItem>
@@ -215,6 +229,7 @@ export default class Basic extends Component {
                   required: true,
                 }],
               })(<ColorSelect
+                disabled={disabled}
                 colors={colorSelectList}
               />)
             }
@@ -229,12 +244,13 @@ export default class Basic extends Component {
                 rules: [{
                   type: 'string',
                   required: true,
-                  message: '标题文字不能为空',
+                  message: '不能为空',
                 }, {
                   max: 10,
-                  message: '标题文字不能大于10个字符',
+                  message: '不能大于10个字符',
                 }],
               })(<Input
+                disabled={disabled}
                 style={{ width: '320px' }}
                 placeholder="请输入标题文字"
               />)
@@ -256,6 +272,7 @@ export default class Basic extends Component {
                   message: '说明文字不能大于24个字符',
                 }],
               })(<Input
+                disabled={disabled}
                 style={{ width: '320px' }}
                 placeholder="请输入说明文字"
               />)
@@ -277,6 +294,7 @@ export default class Basic extends Component {
                   message: '按钮文字不能大于4个字符',
                 }],
               })(<Input
+                disabled={disabled}
                 style={{ width: '320px' }}
                 placeholder="请输入按钮文字"
               />)
@@ -298,6 +316,7 @@ export default class Basic extends Component {
                   message: '请输入正确的按钮外链',
                 }],
               })(<Input
+                disabled={disabled}
                 style={{ width: '320px' }}
                 placeholder="请输入按钮文字"
               />)
@@ -308,6 +327,8 @@ export default class Basic extends Component {
             label="监测代码"
           >
             <MonitorUrl
+              disabled={disabled}
+              ctx={'linkBtnMonitorUrl'}
               monitorUrlList={data.linkBtnMonitorUrl}
             />
           </FormItem>
@@ -318,7 +339,9 @@ export default class Basic extends Component {
                   valuePropName: 'checked',
                   initialValue: data.needPraised,
                   rules: [],
-                })(<Checkbox>
+                })(<Checkbox
+                  disabled={disabled}
+                >
                   是否需要点赞功能
                 </Checkbox>)
               }

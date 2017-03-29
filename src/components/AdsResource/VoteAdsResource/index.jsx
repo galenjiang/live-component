@@ -156,7 +156,7 @@ export default class VoteAdsResource extends Component {
 
       onOk({
         ...this.state.data,
-        ..._(values).omitBy('qoptionsIndex').mapValues((value, key) => {
+        ..._(values).omit('qoptionsIndex').mapValues((value, key) => {
           if (key === 'specifyIdx') {
             return parseInt(value);
           }

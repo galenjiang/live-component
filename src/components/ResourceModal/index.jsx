@@ -1,7 +1,6 @@
 // 3rd-part
 import React, { Component, PropTypes } from 'react';
-import CSSModule from 'react-css-modules';
-import { Button, Modal } from 'antd';
+import { Button, Modal, message } from 'antd';
 
 // self
 import Carousel from '../Carousel';
@@ -12,17 +11,19 @@ import './style.less';
 export default class ResourceModal extends Component {
 
   static propsType = {
+    disabled: PropTypes.bool,
     isCreated: PropTypes.bool.isRequired,
     title: PropTypes.string.isRequired,           // 标题
     onCancel: PropTypes.func.isRequired,
     onOk: PropTypes.func.isRequired,
-    onSkinChange: PropTypes.func.isRequired,      // 更换皮肤
+    onSkinChange: PropTypes.func,      // 更换皮肤
     skinTypeList: PropTypes.array.isRequired,     // 广告皮肤的类型
     skin: PropTypes.number.isRequired,            // 当前 carousel 的 index 写的比较复杂
     loading: PropTypes.bool.isRequired,
   }
 
   static defaultProps = {
+    disabled: false,
     onSkinChange: () => {},
   }
 
@@ -37,7 +38,11 @@ export default class ResourceModal extends Component {
   }
 
   changeSkin = (index) => {
-    const { onSkinChange } = this.props;
+    const { onSkinChange, disabled } = this.props;
+    if (disabled) {
+      message.error('不可修改！');
+      return false;
+    }
     this.setState({
       skin: index,
     }, () => {
@@ -52,7 +57,7 @@ export default class ResourceModal extends Component {
   }
 
   render() {
-    const { loading, isCreated, title, skinTypeList, onCancel, onOk } = this.props;
+    const { loading, isCreated, title, skinTypeList, onCancel, onOk, disabled } = this.props;
     const { skin, step } = this.state;
     const { changeSkin, changeStep } = this;
 
@@ -91,13 +96,16 @@ export default class ResourceModal extends Component {
               >
                 上一步
               </Button>
-              <Button
-                type="primary"
-                loading={loading}
-                onClick={onOk}
-              >
-                确定
-              </Button>
+              {
+                !disabled
+                && <Button
+                  type="primary"
+                  loading={loading}
+                  onClick={onOk}
+                >
+                  确定
+                </Button>
+              }
             </section>
           }
 

@@ -1,7 +1,7 @@
 // official
 import React, { Component, PropTypes } from 'react';
 // 3rd-part
-
+import { message } from 'antd';
 // mine
 import './ColorSelect.less';
 export default class ColorSelect extends Component {
@@ -40,7 +40,10 @@ export default class ColorSelect extends Component {
    * @private
    */
   __onColorSelectClick(index) {
-    const { onChange } = this.props;
+    const { onChange, disabled } = this.props;
+    if (disabled) {
+      return false;
+    }
     onChange && onChange(index);
   }
 

@@ -20,7 +20,6 @@ const { reg, decorators: { formCreate } } = utils;
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
-let monitorUrl = [];
 
 @formCreate()
 @CSSModule(style)
@@ -37,13 +36,16 @@ export default class Basic extends Component {
     const { form } = this.props;
     event.$on('validateFields', (callback) => {
       // before get monitorUrl value, clear array
-      monitorUrl = [];
+      let monitorUrl = {};
       let monitorErr = null;
       event.$emit('validateMonitorUrl', (data) => {
         if (data instanceof Error) {
           monitorErr = data;
         }
-        monitorUrl.push(data);
+        monitorUrl = {
+          ...monitorUrl,
+          ...data,
+        };
       });
 
       form.validateFields((err, values) => {
@@ -118,7 +120,7 @@ export default class Basic extends Component {
 
 
   render() {
-    const { form, sidebarAdsList } = this.props;
+    const { form, sidebarAdsList, disabled } = this.props;
     const { data } = this.state;
     // const { removeTextItem } = this;
 
@@ -174,6 +176,7 @@ export default class Basic extends Component {
                           message: '请输入底色样式',
                         }],
                       })(<ColorSelect
+                        disabled={disabled}
                         colors={colorSelectList}
                       />)
                     }
@@ -195,11 +198,14 @@ export default class Basic extends Component {
                             message: '请上传ICON小图',
                           }],
                         })(<ImageUploadCustomed
+                          disabled={disabled}
                           crop
-                          disabled={false}
                           cropOptions={{
                             aspect: 1,
                           }}
+                          axiosComtomed={this.props.axiosComtomed}
+                          staticVideoJJAPI={this.props.staticVideoJJAPI}
+                          qiniuUploadAPI={this.props.qiniuUploadAPI}
                         />)
                       }
                     </div>
@@ -219,7 +225,9 @@ export default class Basic extends Component {
                           max: 15,
                           message: '描述内容不能超过15个字符',
                         }],
-                      })(<Input />)
+                      })(<Input
+                        disabled={disabled}
+                      />)
                     }
                   </FormItem>
 
@@ -232,6 +240,7 @@ export default class Basic extends Component {
                         initialValue: data.textList[index].linkOption,
                       })(<RadioGroup
                         style={{ width: '280px' }}
+                        disabled={disabled}
                       >
                         <Radio style={radioStyle} key="0" value={0}>
                           <div styleName={`${prefix}-item-radio-label`}>打开网页</div>
@@ -249,7 +258,9 @@ export default class Basic extends Component {
                                     required: true,
                                     message: '请输入网页地址',
                                   }],
-                                })(<Input />)
+                                })(<Input
+                                  disabled={disabled}
+                                />)
                               }
                             </FormItem>
                           }
@@ -271,6 +282,7 @@ export default class Basic extends Component {
                                     }],
                                   })(<Select
                                     style={{ minWidth: '100px' }}
+                                    disabled={disabled}
                                   >
                                     {
                                       sidebarAdsList && sidebarAdsList.map(item => <Option
@@ -294,6 +306,8 @@ export default class Basic extends Component {
                     label="监测代码"
                   >
                     <MonitorUrl
+                      disabled={disabled}
+                      ctx={`textList[${index}].monitorUrl`}
                       monitorUrlList={data.textList[index].monitorUrl}
                     />
                   </FormItem>
@@ -302,19 +316,7 @@ export default class Basic extends Component {
             </Col>)
           }
         </Row>
-        {/*<Row>
-          <Col span={12}>
-            <div styleName={`${prefix}-add-button`}>
-              <Button
-                style={{ width: '100%' }}
-                onClick={addTextItem}
-              >
-                添加内容
-              </Button>
-            </div>
-          </Col>
-        </Row>*/}
       </section>
-    )
+    );
   }
 }

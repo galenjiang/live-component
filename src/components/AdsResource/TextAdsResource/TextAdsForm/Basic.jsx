@@ -20,8 +20,6 @@ const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
 
-let monitorUrl = [];
-
 @formCreate()
 @CSSModule(style)
 export default class Basic extends Component {
@@ -37,13 +35,16 @@ export default class Basic extends Component {
     const { form } = this.props;
     event.$on('validateFields', (callback) => {
       // before get monitorUrl value, clear array
-      monitorUrl = [];
+      let monitorUrl = {};
       let monitorErr = null;
       event.$emit('validateMonitorUrl', (data) => {
         if (data instanceof Error) {
           monitorErr = data;
         }
-        monitorUrl.push(data);
+        monitorUrl = {
+          ...monitorUrl,
+          ...data,
+        };
       });
 
       form.validateFields((err, values) => {
@@ -67,7 +68,11 @@ export default class Basic extends Component {
    * 添加一个新的选项
    */
   addTextItem = () => {
-    const { form, data } = this.props;
+    const { form, disabled } = this.props;
+    if (disabled) {
+      message.error('不可修改！');
+      return false;
+    }
     const textListIndex = form.getFieldValue('textListIndex');
 
     // 限制只能添加5条
@@ -99,7 +104,11 @@ export default class Basic extends Component {
    * @private
    */
   removeTextItem = (index) => {
-    const { form } = this.props;
+    const { form, disabled } = this.props;
+    if (disabled) {
+      message.error('不可修改！');
+      return false;
+    }
     const textListIndex = form.getFieldValue('textListIndex');
     const textList = form.getFieldValue('textList');
     if (textListIndex.length <= 1) {
@@ -118,7 +127,7 @@ export default class Basic extends Component {
   }
 
   render() {
-    const { form, sidebarAdsList } = this.props;
+    const { form, sidebarAdsList, disabled } = this.props;
     const { data } = this.state;
     const { addTextItem, removeTextItem } = this;
 
@@ -156,7 +165,10 @@ export default class Basic extends Component {
                 </p>
                 <div styleName={`${prefix}-item-content`}>
                   <div styleName={`${prefix}-item-delete`}>
-                    <Icon type="delete" onClick={() => removeTextItem(index)} />
+                    {
+                      !disabled
+                      && <Icon type="delete" onClick={() => removeTextItem(index)} />
+                    }
                   </div>
                   {/* 表单区域 */}
                   <Form>
@@ -175,6 +187,7 @@ export default class Basic extends Component {
                           }],
                         })(<ColorSelect
                           colors={colorSelectList}
+                          disabled={disabled}
                         />)
                       }
                     </FormItem>
@@ -193,7 +206,9 @@ export default class Basic extends Component {
                             max: 15,
                             message: '描述内容不能超过15个字符',
                           }],
-                        })(<Input />)
+                        })(<Input
+                          disabled={disabled}
+                        />)
                       }
                     </FormItem>
 
@@ -210,6 +225,7 @@ export default class Basic extends Component {
                           initialValue: data.textList[index].linkOption,
                         })(<RadioGroup
                           style={{ width: '280px' }}
+                          disabled={disabled}
                         >
                           <Radio style={radioStyle} key="0" value={0}>
                             <div styleName={`${prefix}-item-radio-label`}>打开网页</div>
@@ -228,6 +244,7 @@ export default class Basic extends Component {
                                       message: '请输入网页地址',
                                     }],
                                   })(<Input
+                                    disabled={disabled}
                                   />)
                                 }
                               </FormItem>
@@ -250,6 +267,7 @@ export default class Basic extends Component {
                                       }],
                                     })(<Select
                                       style={{ minWidth: '100px' }}
+                                      disabled={disabled}
                                     >
                                       {
                                         sidebarAdsList && sidebarAdsList.map(item => <Option
@@ -277,6 +295,8 @@ export default class Basic extends Component {
                       label="监测代码"
                     >
                       <MonitorUrl
+                        disabled={disabled}
+                        ctx={`textList[${index}].monitorUrl`}
                         monitorUrlList={data.textList[index].monitorUrl}
                       />
                     </FormItem>
@@ -291,16 +311,19 @@ export default class Basic extends Component {
         <Row>
           <Col span={12}>
             <div styleName={`${prefix}-add-button`}>
-              <Button
-                style={{ width: '100%' }}
-                onClick={addTextItem}
-              >
-                添加内容
-              </Button>
+              {
+                !disabled
+                && <Button
+                  style={{ width: '100%' }}
+                  onClick={addTextItem}
+                >
+                  添加内容
+                </Button>
+              }
             </div>
           </Col>
         </Row>
       </section>
-    )
+    );
   }
 }

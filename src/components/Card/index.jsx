@@ -13,7 +13,8 @@ export default class Card extends Component {
     radio: 1,
     onDelete: () => {},
     leftText: '投放',
-    rightText: '',
+    rightText: '编辑',
+    description: '',
   }
 
   static propTypes = {
@@ -21,7 +22,9 @@ export default class Card extends Component {
     onEdit: PropTypes.func.isRequired,
     onDelete: PropTypes.func,
     radio: PropTypes.number,
-    description: PropTypes.string.isRequired,
+    leftText: PropTypes.string,
+    rightText: PropTypes.string,
+    description: PropTypes.string,
   }
 
   constructor(props) {
@@ -29,7 +32,7 @@ export default class Card extends Component {
   }
 
   render() {
-    const { radio, onPut, onEdit, onDelete, description, hasDelete } = this.props;
+    const { radio, onPut, onEdit, onDelete, description, hasDelete, leftText, rightText } = this.props;
     const prefix = 'live-card';
 
     return (
@@ -41,11 +44,11 @@ export default class Card extends Component {
           <div styleName={`${prefix}-bar`} style={{ paddingTop: `${(1 / radio) * 100}%` }} />
           <div styleName={`${prefix}-mask`}>
             <span styleName={`${prefix}-btn`}>
-              <Button type="primary" onClick={onPut}>投放</Button>
+              <Button type="primary" onClick={onPut}>{leftText}</Button>
             </span>
             <span styleName={`${prefix}-btn`}>
               <Button type="primary" onClick={onEdit}>
-                编辑
+                {rightText}
               </Button>
             </span>
           </div>

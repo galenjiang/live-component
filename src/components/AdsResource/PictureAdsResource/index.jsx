@@ -19,7 +19,6 @@ const { event, reg, decorators: { formCreate } } = utils;
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
-let monitorUrl = [];
 
 @formCreate()
 @CSSModule(style)
@@ -29,6 +28,8 @@ export default class PictureAdsResource extends Component {
 
     const { data } = props;
 
+    // data.webSideBar = _.get(data.webSideBar, '_id', '');
+    // data.mobileSideBar = _.get(data.mobileSideBar, '_id', '');
     // 初始化
     const modelConfig = {
       __t: 'PicAds',
@@ -36,10 +37,10 @@ export default class PictureAdsResource extends Component {
       title: '',
       webLinkOption: 0,
       url: '',
-      webSideBar: props.sidebarAdsList[0]._id,
+      webSideBar: _.get(props.sidebarAdsList, '[0]._id', ''),
       mobileLinkOption: 0,
       mobileUrl: '',
-      mobileSideBar: props.sidebarAdsList[0]._id,
+      mobileSideBar: _.get(props.sidebarAdsList, '[0]._id', ''),
       desc: '',
       pic: '',
       monitorUrl: [
@@ -58,13 +59,16 @@ export default class PictureAdsResource extends Component {
   onOk = () => {
     const { form, onOk } = this.props;
     // before get monitorUrl value, clear array
-    monitorUrl = [];
+    let monitorUrl = {};
     let monitorErr = null;
     event.$emit('validateMonitorUrl', (data) => {
       if (data instanceof Error) {
         monitorErr = data;
       }
-      monitorUrl.push(data);
+      monitorUrl = {
+        ...monitorUrl,
+        ...data,
+      };
     });
 
     form.validateFields((err, values) => {
@@ -74,7 +78,24 @@ export default class PictureAdsResource extends Component {
 
       if (monitorErr) return false;
 
-      onOk(values, monitorUrl);
+      // values, monitorUrl
+
+      _(monitorUrl).forEach((item, key) => {
+        const monitor = _(item)
+          .map(el => ({
+            [el[0]]: {
+              [el[1]]: el[2],
+            },
+            admaster: el[3],
+          }))
+          .value();
+        _.set(values, key, monitor);
+      });
+
+      onOk({
+        ...this.state.data,
+        ...values,
+      });
     });
 
 
@@ -145,7 +166,7 @@ export default class PictureAdsResource extends Component {
   }
 
   render() {
-    const { onCancel, isCreated, sidebarAdsList, form } = this.props;
+    const { onCancel, isCreated, sidebarAdsList, form, disabled } = this.props;
     const { loading, data } = this.state;
     const { onSkinChange, onOk } = this;
 
@@ -207,10 +228,13 @@ export default class PictureAdsResource extends Component {
                     }],
                   })(<ImageUploadCustomed
                     crop={false}
-                    disabled={false}
+                    disabled={disabled}
                     cropOptions={{
                       aspect: 1,
                     }}
+                    axiosComtomed={this.props.axiosComtomed}
+                    staticVideoJJAPI={this.props.staticVideoJJAPI}
+                    qiniuUploadAPI={this.props.qiniuUploadAPI}
                   />)
                 }
               </div>
@@ -230,6 +254,7 @@ export default class PictureAdsResource extends Component {
                   }],
                 })(<Input
                   style={{ width: '320px' }}
+                  disabled={disabled}
                   placeholder="好的名称可以帮助搜索和查询"
                 />)
               }
@@ -249,6 +274,7 @@ export default class PictureAdsResource extends Component {
                   }],
                 })(<Input
                   style={{ width: '320px' }}
+                  disabled={disabled}
                   placeholder="好的广告文案能吸引更多人"
                 />)
               }
@@ -267,6 +293,7 @@ export default class PictureAdsResource extends Component {
                   }],
                 })(<RadioGroup
                   style={{ width: '280px' }}
+                  disabled={disabled}
                 >
                   <Radio style={radioStyle} key="0" value={0}>
                     <div styleName={`${prefix}-item-radio-label`}>打开网页</div>
@@ -283,6 +310,7 @@ export default class PictureAdsResource extends Component {
                             message: '请输入正确的广告链接',
                           }],
                         })(<Input
+                          disabled={disabled}
                           style={{ width: '320px' }}
                         />)
                       }
@@ -295,8 +323,12 @@ export default class PictureAdsResource extends Component {
                       form.getFieldValue('webLinkOption') === 1
                       && form.getFieldDecorator('webSideBar', {
                         initialValue: data.webSideBar,
-                        rules: [],
+                        rules: [{
+                          required: true,
+                          message: '不能为空',
+                        }],
                       })(<Select
+                        disabled={disabled}
                         style={{ minWidth: '100px' }}
                       >
                         {
@@ -324,6 +356,7 @@ export default class PictureAdsResource extends Component {
                   initialValue: data.mobileLinkOption,
                 })(<RadioGroup
                   style={{ width: '280px' }}
+                  disabled={disabled}
                 >
                   <Radio style={radioStyle} key="0" value={0}>
                     <div styleName={`${prefix}-item-radio-label`}>打开网页</div>
@@ -340,6 +373,7 @@ export default class PictureAdsResource extends Component {
                             message: '请输入正确的广告链接',
                           }],
                         })(<Input
+                          disabled={disabled}
                           style={{ width: '320px' }}
                         />)
                       }
@@ -351,9 +385,13 @@ export default class PictureAdsResource extends Component {
                       form.getFieldValue('mobileLinkOption') === 1
                       && form.getFieldDecorator('mobileSideBar', {
                         initialValue: data.mobileSideBar,
-                        rules: [],
+                        rules: [{
+                          required: true,
+                          message: '不能为空',
+                        }],
                       })(<Select
                         style={{ minWidth: '100px' }}
+                        disabled={disabled}
                       >
                         {
                           sidebarAdsList && sidebarAdsList.map(item => <Option
@@ -375,6 +413,8 @@ export default class PictureAdsResource extends Component {
               label="监测代码"
             >
               <MonitorUrl
+                disabled={disabled}
+                ctx={'monitorUrl'}
                 monitorUrlList={data.monitorUrl}
               />
             </FormItem>

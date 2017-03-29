@@ -17,7 +17,7 @@ const agentList = [
   },
   {
     name: '安卓',
-    value: 'andriod',
+    value: 'android',
   },
 ];
 const detectionList = [{
