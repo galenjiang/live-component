@@ -91,9 +91,9 @@ export default class ImageGroup extends Component {
   }
 
   render() {
-    const props = _.cloneDeep(this.props)
-    const { maxLength } = props
-    const { images } = this.state
+    const props = _.cloneDeep(this.props);
+    const { maxLength, disabled } = props;
+    const { images } = this.state;
     const { setFields, addImageItem, deleteImageItem } = this;
     return (
       <div styleName="container">
@@ -107,6 +107,7 @@ export default class ImageGroup extends Component {
                 key={item.key}
               >
                 <ImageUploadCustomed
+                  disabled={disabled}
                   axiosComtomed={this.props.axiosComtomed}
                   staticVideoJJAPI={this.props.staticVideoJJAPI}
                   qiniuUploadAPI={this.props.qiniuUploadAPI}
@@ -120,8 +121,8 @@ export default class ImageGroup extends Component {
           })
         }
         {
-          (!maxLength || maxLength > 1) &&
-          <div styleName="button-container">
+          (!maxLength || maxLength > 1) && !disabled
+          && <div styleName="button-container">
             <Button
               onClick={addImageItem}
             >添加</Button>

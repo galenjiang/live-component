@@ -96,12 +96,13 @@ export default class NewsAdsResource extends Component {
   }
 
   render() {
-    const { onCancel, isCreated, form, axiosComtomed, staticVideoJJAPI, qiniuUploadAPI } = this.props;
+    const { disabled, onCancel, isCreated, form, axiosComtomed, staticVideoJJAPI, qiniuUploadAPI } = this.props;
     const { loading, data } = this.state;
     const { onSkinChange, onOk } = this;
 
 
     const modalProps = {
+      disabled,
       isCreated,
       title: _.find(config, item => item.style === data.style).type,
       skinTypeList: config,
@@ -158,8 +159,8 @@ export default class NewsAdsResource extends Component {
                       message: '请上传图片',
                     }],
                   })(<ImageUploadCustomed
+                    disabled={disabled}
                     crop={false}
-                    disabled={false}
                     cropOptions={{
                       aspect: 1,
                     }}
@@ -187,6 +188,7 @@ export default class NewsAdsResource extends Component {
                     message: '不能大于20个字符',
                   }],
                 })(<Input
+                  disabled={disabled}
                   style={{ width: '320px' }}
                   placeholder="请输入标题名称"
                 />)
@@ -205,6 +207,7 @@ export default class NewsAdsResource extends Component {
                     message: '不能为空',
                   }],
                 })(<Input
+                  disabled={disabled}
                   type="textarea"
                   autosize={{ minRows: 3, maxRows: 6 }}
                   style={{ width: '320px' }}
@@ -225,6 +228,7 @@ export default class NewsAdsResource extends Component {
                     message: '不能为空',
                   }],
                 })(<Input
+                  disabled={disabled}
                   style={{ width: '320px' }}
                   placeholder="请输入新闻来源"
                 />)
@@ -243,6 +247,7 @@ export default class NewsAdsResource extends Component {
                     message: '不能为空',
                   }],
                 })(<Input
+                  disabled={disabled}
                   style={{ width: '320px' }}
                   placeholder="请输入新闻时间"
                 />)
@@ -268,6 +273,7 @@ export default class NewsAdsResource extends Component {
                     message: 'url格式不正确',
                   }],
                 })(<Input
+                  disabled={disabled}
                   placeholder="请输入appstore跳转外链"
                 />)
               }
@@ -288,6 +294,7 @@ export default class NewsAdsResource extends Component {
                     message: 'url格式不正确',
                   }],
                 })(<Input
+                  disabled={disabled}
                   placeholder="请输入下载链接"
                 />)
               }
@@ -306,6 +313,7 @@ export default class NewsAdsResource extends Component {
                     message: '不能为空',
                   }],
                 })(<Input
+                  disabled={disabled}
                   placeholder="请输入调起链接"
                 />)
               }
@@ -326,6 +334,7 @@ export default class NewsAdsResource extends Component {
                     message: '不能为空',
                   }],
                 })(<Input
+                  disabled={disabled}
                   style={{ width: '320px' }}
                   placeholder="请输入appstore跳转外链"
                 />)
@@ -347,6 +356,7 @@ export default class NewsAdsResource extends Component {
                     message: 'url格式不正确',
                   }],
                 })(<Input
+                  disabled={disabled}
                   placeholder="请输入下载链接"
                 />)
               }
@@ -365,6 +375,7 @@ export default class NewsAdsResource extends Component {
                     message: '不能为空',
                   }],
                 })(<Input
+                  disabled={disabled}
                   placeholder="请输入调起链接"
                 />)
               }

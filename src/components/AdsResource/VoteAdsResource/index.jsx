@@ -219,12 +219,13 @@ export default class VoteAdsResource extends Component {
   }
 
   render() {
-    const { onCancel, isCreated } = this.props;
+    const { onCancel, isCreated, disabled } = this.props;
     const { loading, data } = this.state;
     const { onSkinChange, onOk } = this;
 
 
     const modalProps = {
+      disabled,
       isCreated,
       title: _.find(config, item => item.style === data.style).type,
       skinTypeList: config,
@@ -235,10 +236,6 @@ export default class VoteAdsResource extends Component {
       loading,
     };
 
-    // 不同类型的球不同的配置
-    const style = data.style;
-
-    const prefix = 'vote-ads-resource';
     // let voteConfigItem = config.find(item => item.style === style).validate
 
 

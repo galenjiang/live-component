@@ -94,7 +94,7 @@ export default class MangoCool extends Component {
   }
 
   render() {
-    const { form } = this.props;
+    const { form, disabled } = this.props;
     const { data } = this.state;
     const { removeQoption, addQoption } = this;
 
@@ -147,7 +147,9 @@ export default class MangoCool extends Component {
             form.getFieldDecorator('voteRepeat', {
               valuePropName: 'checked',
               initialValue: data.voteRepeat,
-            })(<Checkbox>
+            })(<Checkbox
+              disabled={disabled}
+            >
               允许重复投票
             </Checkbox>)
           }
@@ -156,7 +158,9 @@ export default class MangoCool extends Component {
           {
             form.getFieldDecorator('qoptionsType', {
               initialValue: data.qoptionsType,
-            })(<RadioGroup>
+            })(<RadioGroup
+              disabled={disabled}
+            >
               <Radio key={0} value={0}>百分比</Radio>
               {/* 科技风不能选数字 */}
               <Radio key={1} value={1}>数字</Radio>
@@ -186,6 +190,7 @@ export default class MangoCool extends Component {
                       message: '请输入正确的热点图片',
                     }],
                   })(<ImageUploadCustomed
+                    disabled={disabled}
                     {...{
                       crop: true,
                       disabled: false,
@@ -218,6 +223,7 @@ export default class MangoCool extends Component {
                     message: '投票标题不能大于24个字符',
                   }],
                 })(<Input
+                  disabled={disabled}
                   style={{ width: '250px' }}
                 />)
               }
@@ -234,7 +240,9 @@ export default class MangoCool extends Component {
                     pattern: reg.httpRegWithProtocol,
                     message: '请输入正确的外链地址',
                   }],
-                })(<Input />)
+                })(<Input
+                  disabled={disabled}
+                />)
               }
 
             </FormItem>
@@ -252,6 +260,7 @@ export default class MangoCool extends Component {
                     message: '请输入正确的投票倍数',
                   }],
                 })(<InputNumber
+                  disabled={disabled}
                   style={{ style: '250px' }}
                   min={0}
                 />)
@@ -266,6 +275,7 @@ export default class MangoCool extends Component {
                 form.getFieldDecorator('specifyIdx', {
                   initialValue: String(data.specifyIdx),
                 })(<Select
+                  disabled={disabled}
                   style={{ width: '250px' }}
                 >
                   <Option value={'-1'} key={-1}>无</Option>
@@ -294,6 +304,7 @@ export default class MangoCool extends Component {
                     message: '请输入正确的位移值',
                   }],
                 })(<InputNumber
+                  disabled={disabled}
                   style={{ style: '250px' }}
                   placeholder="投票向上位移量，单位px"
                 />)
@@ -308,6 +319,7 @@ export default class MangoCool extends Component {
           >
             <MonitorUrl
               ctx={'monitorUrl'}
+              disabled={disabled}
               monitorUrlList={data.monitorUrl}
             />
           </FormItem>
@@ -330,9 +342,9 @@ export default class MangoCool extends Component {
                     message: '请输入正确的广告图片',
                   }],
                 })(<ImageUploadCustomed
+                  disabled={disabled}
                   {...{
                     crop: true,
-                    disabled: false,
                     cropOptions: {
                       aspect: 250 / 100,
                     },
@@ -351,6 +363,7 @@ export default class MangoCool extends Component {
           >
             <MonitorUrl
               ctx={'votePicMonitorUrl'}
+              disabled={disabled}
               monitorUrlList={data.votePicMonitorUrl}
             />
           </FormItem>
@@ -366,12 +379,15 @@ export default class MangoCool extends Component {
                 <div styleName={`${prefix}-configure-qoptions-list`}>
                   <p styleName={`${prefix}-configure-qoptions-title`}>选项{index + 1}</p>
                   <div styleName={`${prefix}-configure-qoptions-detail`}>
-                    <div styleName={`${prefix}-configure-qoptions-delete`}>
-                      <Icon
-                        onClick={() => removeQoption(index)}
-                        type="delete"
-                      />
-                    </div>
+                    {
+                      !disabled
+                      && <div styleName={`${prefix}-configure-qoptions-delete`}>
+                        <Icon
+                          onClick={() => removeQoption(index)}
+                          type="delete"
+                        />
+                      </div>
+                    }
                     <FormItem
                       {...qoptionsFormItemLayout}
                       label="投票图片"
@@ -391,9 +407,9 @@ export default class MangoCool extends Component {
                               message: '请输入正确的投票图片',
                             }],
                           })(<ImageUploadCustomed
+                            disabled={disabled}
                             {...{
                               crop: true,
-                              disabled: false,
                               cropOptions: {
                                 aspect: 14 / 15,
                               },
@@ -420,7 +436,9 @@ export default class MangoCool extends Component {
                             max: 6,
                             message: '选项标题不能大于6个字符',
                           }],
-                        })(<Input />)
+                        })(<Input
+                          disabled={disabled}
+                        />)
                       }
                     </FormItem>
                   </div>
@@ -428,17 +446,20 @@ export default class MangoCool extends Component {
               </Col>)
             }
           </Row>
-          <Row>
-            <Col span={12} style={{ padding: '1em' }}>
-              <Button
-                type="ghost"
-                style={{ width: '100%' }}
-                onClick={addQoption}
-              >
-                添加内容
-              </Button>
-            </Col>
-          </Row>
+          {
+            !disabled
+            && <Row>
+              <Col span={12} style={{ padding: '1em' }}>
+                <Button
+                  type="ghost"
+                  style={{ width: '100%' }}
+                  onClick={addQoption}
+                >
+                  添加内容
+                </Button>
+              </Col>
+            </Row>
+          }
         </section>
       </div>
     );

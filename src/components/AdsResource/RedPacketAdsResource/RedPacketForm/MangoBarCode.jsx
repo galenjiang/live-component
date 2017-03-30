@@ -16,7 +16,6 @@ import style from '../style.M.less';
 const RadioGroup = Radio.Group;
 const FormItem = Form.Item;
 const { event, reg, decorators: { formCreate }, validate } = utils;
-let monitorUrl = [];
 
 @formCreate()
 @CSSModule(style)
@@ -59,13 +58,16 @@ export default class MangoBarCode extends Component {
     const { form } = this.props;
     event.$on('validateFields', (callback) => {
       // before get monitorUrl value, clear array
-      monitorUrl = [];
+      let monitorUrl = {};
       let monitorErr = null;
       event.$emit('validateMonitorUrl', (data) => {
         if (data instanceof Error) {
           monitorErr = data;
         }
-        monitorUrl.push(data);
+        monitorUrl = {
+          ...monitorUrl,
+          ...data,
+        };
       });
 
       form.validateFields((err, values) => {
@@ -86,7 +88,7 @@ export default class MangoBarCode extends Component {
 
 
   render() {
-    const { form } = this.props;
+    const { form, disabled } = this.props;
     const { data } = this.state;
 
     const prefix = 'redpacket-ads-resource';
@@ -140,8 +142,11 @@ export default class MangoBarCode extends Component {
                     message: '请上传热点图片',
                   }],
                 })(<ImageUploadCustomed
+                  axiosComtomed={this.props.axiosComtomed}
+                  staticVideoJJAPI={this.props.staticVideoJJAPI}
+                  qiniuUploadAPI={this.props.qiniuUploadAPI}
                   crop={false}
-                  disabled={false}
+                  disabled={disabled}
                   cropOptions={{
                     aspect: 90 / 120,
                   }}
@@ -156,7 +161,9 @@ export default class MangoBarCode extends Component {
                   valuePropName: 'checked',
                   initialValue: data.displayCountDown,
                   rules: [],
-                })(<Checkbox>
+                })(<Checkbox
+                  disabled={disabled}
+                >
                   是否显示标语
                 </Checkbox>)
               }
@@ -186,6 +193,7 @@ export default class MangoBarCode extends Component {
                     },
                   }],
                 })(<Input
+                  disabled={disabled}
                   type="textarea"
                   placeholder="标语文本 共8个字符 一行4个字符"
                   autosize={{ minRows: 2, maxRows: 2 }}
@@ -199,6 +207,8 @@ export default class MangoBarCode extends Component {
             label="监测代码"
           >
             <MonitorUrl
+              disabled={disabled}
+              ctx={'monitorUrl'}
               monitorUrlList={data.monitorUrl}
             />
           </FormItem>
@@ -225,6 +235,7 @@ export default class MangoBarCode extends Component {
                   },
                 }],
               })(<Input
+                disabled={disabled}
                 type="textarea"
                 style={{ width: '320px' }}
                 placeholder="请输入红包标题"
@@ -250,8 +261,11 @@ export default class MangoBarCode extends Component {
                     message: '请上传品牌LOGO',
                   }],
                 })(<ImageUploadCustomed
+                  axiosComtomed={this.props.axiosComtomed}
+                  staticVideoJJAPI={this.props.staticVideoJJAPI}
+                  qiniuUploadAPI={this.props.qiniuUploadAPI}
                   crop={false}
-                  disabled={false}
+                  disabled={disabled}
                   cropOptions={{
                     aspect: 90 / 120,
                   }}
@@ -281,6 +295,7 @@ export default class MangoBarCode extends Component {
                   },
                 }],
               })(<Input
+                disabled={disabled}
                 type="textarea"
                 autosize={{ minRows: 2, maxRows: 2 }}
                 style={{ width: '320px' }}
@@ -303,7 +318,10 @@ export default class MangoBarCode extends Component {
                   pattern: reg.httpRegWithProtocol,
                   message: '红包链接不合法',
                 }],
-              })(<Input placeholder="请输入红包链接" />)
+              })(<Input
+                disabled={disabled}
+                placeholder="请输入红包链接"
+              />)
             }
           </FormItem>
 
@@ -325,8 +343,11 @@ export default class MangoBarCode extends Component {
                     message: '请上传广告图片',
                   }],
                 })(<ImageUploadCustomed
+                  axiosComtomed={this.props.axiosComtomed}
+                  staticVideoJJAPI={this.props.staticVideoJJAPI}
+                  qiniuUploadAPI={this.props.qiniuUploadAPI}
                   crop={false}
-                  disabled={false}
+                  disabled={disabled}
                   cropOptions={{
                     aspect: 150 / 150,
                   }}
@@ -346,7 +367,10 @@ export default class MangoBarCode extends Component {
                   pattern: reg.httpRegWithProtocol,
                   message: '广告外链不合法',
                 }],
-              })(<Input placeholder="请输入广告外链" />)
+              })(<Input
+                placeholder="请输入广告外链"
+                disabled={disabled}
+              />)
             }
           </FormItem>
           <FormItem
@@ -354,6 +378,8 @@ export default class MangoBarCode extends Component {
             label="监测代码"
           >
             <MonitorUrl
+              disabled={disabled}
+              ctx={'afterOpen.monitorUrl'}
               monitorUrlList={data.afterOpen.monitorUrl}
             />
           </FormItem>

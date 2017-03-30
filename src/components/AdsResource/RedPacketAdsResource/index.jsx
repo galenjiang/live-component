@@ -4,7 +4,7 @@ import React, { Component, PropTypes } from 'react';
 import CSSModule from 'react-css-modules';
 
 // Third-part
-import { Form, Row, Col, InputNumber, Input, Checkbox, message, Radio } from 'antd';
+import { message } from 'antd';
 import _ from 'lodash';
 
 // self components
@@ -87,8 +87,33 @@ export default class ModalAdRedPackets extends Component {
    * @private
    */
   onOk = () => {
-    event.$emit('validateFields', (...args) => {
-      console.log(args);
+    const { onOk } = this.props;
+    event.$emit('validateFields', (values, monitorUrl, promo) => {
+      const sortedData = _(values)
+        .mapValues((item, key) => {
+          // if (key === 'cover') {
+          //   return _(item).map((el) => {
+          //     return { fileType: 'image', src: el };
+          //   }).value();
+          // }
+          return item;
+        })
+        .value();
+      _(monitorUrl).forEach((item, key) => {
+        const monitor = _(item)
+          .map(el => ({
+            [el[0]]: {
+              [el[1]]: el[2],
+            },
+            admaster: el[3],
+          }))
+          .value();
+        _.set(sortedData, key, monitor);
+      });
+      onOk({
+        ...this.state.data,
+        ...sortedData,
+      }, promo);
     });
     // const data = _.cloneDeep(this.state.data)
     // const { style } = data
@@ -247,7 +272,7 @@ export default class ModalAdRedPackets extends Component {
   }
 
   render() {
-    const { onCancel, isCreated } = this.props;
+    const { onCancel, isCreated, disabled } = this.props;
     const { data, loading } = this.state;
     const { onSkinChange, onOk } = this;
 
@@ -263,6 +288,7 @@ export default class ModalAdRedPackets extends Component {
     // const style = data.style
 
     const modalProps = {
+      disabled,
       isCreated,
       title: _.find(config, item => item.style === data.style).type,
       skinTypeList: config,

@@ -288,6 +288,7 @@ export default class VideoAdsResource extends Component {
     };
 
     const modalProps = {
+      disabled,
       isCreated,
       title: _.find(config, item => item.style === data.style).type,
       skinTypeList: config,
@@ -459,12 +460,15 @@ export default class VideoAdsResource extends Component {
               label="视频列表"
               {...notRequiredFormItemLayout}
             >
-              <Button
-                onClick={addVideo}
-                type="primary"
-              >
-                添加视频
-              </Button>
+              {
+                !disabled
+                && <Button
+                  onClick={addVideo}
+                  type="primary"
+                >
+                  添加视频
+                </Button>
+              }
             </FormItem>
             {
               form.getFieldValue('videoListIndex').map((item, index) => {
@@ -478,16 +482,19 @@ export default class VideoAdsResource extends Component {
                     >
                       {`内容${index + 1}`}
                     </div>
-                    <div
-                      styleName={`${prefix}-video-list-btn`}
-                    >
-                      <Button
-                        onClick={() => removeVideo(index)}
-                        type="primary"
+                    {
+                      !disabled
+                      && <div
+                        styleName={`${prefix}-video-list-btn`}
                       >
-                        删除
-                      </Button>
-                    </div>
+                        <Button
+                          onClick={() => removeVideo(index)}
+                          type="primary"
+                        >
+                          删除
+                        </Button>
+                      </div>
+                    }
                     <div styleName={`${prefix}-video-list-item`}>
                       <FormItem
                         {...listFormItemLayout}

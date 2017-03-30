@@ -91,50 +91,16 @@ export default class SidebarModal extends Component {
         ...sortedData,
       });
     });
-    // const data = _.cloneDeep(this.state.data)
-    // let result = validate(data, _.find(sidebarConfig, item => item.style === data.style).validate)
-
-
-    // if (!result.res) {
-    //   let stackList = result.stack
-    //   message.error(`${_(stackList).map(item => item.key).compact().value().join(',')}${stackList[stackList.length - 1].error}`)
-    //   return false
-    // }
-
-    // // 监测代码
-    // if (!monitorUrlValidate(data.coverLinkMonitorUrl, '图片外链')) {
-    //   return false
-    // }
-    // if (!monitorUrlValidate(data.linkBtnMonitorUrl, '按钮外链')) {
-    //   return false
-    // }
-
-
-    // //开始上传数据
-    // let { onOk } = this.props
-
-    // this.setState({
-    //   loading: true
-    // }, async() => {
-    //   try{
-    //     await onOk({
-    //       ...data
-    //     })
-    //   }catch(e){
-    //     this.setState({
-    //       loading: false
-    //     })
-    //   }
-    // })
   }
 
   render() {
-    const { onCancel, isCreated } = this.props;
+    const { onCancel, isCreated, disabled } = this.props;
     const { loading, data } = this.state;
     const { onSkinChange, onOk } = this;
 
 
     const modalProps = {
+      disabled,
       isCreated,
       title: _.find(config, item => item.style === data.style).type,
       skinTypeList: config,

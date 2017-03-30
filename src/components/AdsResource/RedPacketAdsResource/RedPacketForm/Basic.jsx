@@ -21,7 +21,6 @@ import style from '../style.M.less';
 const RadioGroup = Radio.Group;
 const FormItem = Form.Item;
 const { event, reg, decorators: { formCreate }, validate } = utils;
-let monitorUrl = [];
 
 @formCreate()
 @CSSModule(style)
@@ -71,13 +70,16 @@ export default class ModalAdRedPackets extends Component {
     const { form } = this.props;
     event.$on('validateFields', (callback) => {
       // before get monitorUrl value, clear array
-      monitorUrl = [];
+      let monitorUrl = {};
       let monitorErr = null;
       event.$emit('validateMonitorUrl', (data) => {
         if (data instanceof Error) {
           monitorErr = data;
         }
-        monitorUrl.push(data);
+        monitorUrl = {
+          ...monitorUrl,
+          ...data,
+        };
       });
 
       form.validateFields((err, values) => {
@@ -129,7 +131,7 @@ export default class ModalAdRedPackets extends Component {
   }
 
   render() {
-    const { form } = this.props;
+    const { form, disabled } = this.props;
     const { data, isColorPickerShow } = this.state;
     const { toggleColorPicker, closeColorPicker, changeColorPicker } = this;
 
@@ -170,6 +172,7 @@ export default class ModalAdRedPackets extends Component {
                       message: '红包标题不能为空',
                     }],
                   })(<Input
+                    disabled={disabled}
                     placeholder="红包广告标题"
                     style={{ width: '250px' }}
                   />)
@@ -194,11 +197,14 @@ export default class ModalAdRedPackets extends Component {
                         message: '请上传热点图片',
                       }],
                     })(<ImageUploadCustomed
+                      disabled={disabled}
                       crop={false}
-                      disabled={false}
                       cropOptions={{
                         aspect: 1,
                       }}
+                      axiosComtomed={this.props.axiosComtomed}
+                      staticVideoJJAPI={this.props.staticVideoJJAPI}
+                      qiniuUploadAPI={this.props.qiniuUploadAPI}
                     />)
                   }
                 </div>
@@ -212,7 +218,9 @@ export default class ModalAdRedPackets extends Component {
                         initialValue: data.displayCountDown,
                         rules: [{
                         }],
-                      })(<Checkbox>
+                      })(<Checkbox
+                        disabled={disabled}
+                      >
                         是否需要倒计时
                       </Checkbox>)
                     }
@@ -240,6 +248,7 @@ export default class ModalAdRedPackets extends Component {
                         },
                       }],
                     })(<Input
+                      disabled={disabled}
                       placeholder="倒计时文本， 共10个中文， 一行5个"
                       type="textarea"
                       autosize={{ minRows: 2, maxRows: 2 }}
@@ -263,6 +272,7 @@ export default class ModalAdRedPackets extends Component {
                       message: 'WEB落地页配置不合法',
                     }],
                   })(<Input
+                    disabled={disabled}
                     placeholder="WEB落地页配置地址"
                   />)
                 }
@@ -283,6 +293,7 @@ export default class ModalAdRedPackets extends Component {
                       message: '移动端落地页配置不合法',
                     }],
                   })(<Input
+                    disabled={disabled}
                     placeholder="请输入移动端落地页配置地址"
                   />)
                 }
@@ -292,6 +303,8 @@ export default class ModalAdRedPackets extends Component {
                 label="监测代码"
               >
                 <MonitorUrl
+                  disabled={disabled}
+                  ctx={'monitorUrl'}
                   monitorUrlList={data.monitorUrl}
                 />
               </FormItem>
@@ -313,6 +326,7 @@ export default class ModalAdRedPackets extends Component {
                   message: '红包标语不能为空',
                 }],
               })(<Input
+                disabled={disabled}
                 placeholder="请输入红包标语，共两行"
                 type="textarea"
               />)
@@ -337,9 +351,12 @@ export default class ModalAdRedPackets extends Component {
                         message: '请上传广告背景图片图片',
                       }],
                     })(<ImageUploadCustomed
+                      disabled={disabled}
                       crop
-                      disabled={false}
                       cropOptions={{ aspect: 3 / 5 }}
+                      axiosComtomed={this.props.axiosComtomed}
+                      staticVideoJJAPI={this.props.staticVideoJJAPI}
+                      qiniuUploadAPI={this.props.qiniuUploadAPI}
                     />)
                   }
                 </div>
@@ -402,9 +419,12 @@ export default class ModalAdRedPackets extends Component {
                             message: '请上传红包缩小图',
                           }],
                         })(<ImageUploadCustomed
+                          disabled={disabled}
                           crop
-                          disabled={false}
                           cropOptions={{ aspect: 3 / 5 }}
+                          axiosComtomed={this.props.axiosComtomed}
+                          staticVideoJJAPI={this.props.staticVideoJJAPI}
+                          qiniuUploadAPI={this.props.qiniuUploadAPI}
                         />)
                       }
                     </div>
@@ -424,7 +444,9 @@ export default class ModalAdRedPackets extends Component {
                       valuePropName: 'checked',
                       initialValue: data.qrCodePage.customQrCode,
                       rules: [],
-                    })(<Checkbox>
+                    })(<Checkbox
+                      disabled={disabled}
+                    >
                       是否自定义二维码
                     </Checkbox>)
                   }
@@ -454,9 +476,12 @@ export default class ModalAdRedPackets extends Component {
                         message: '请上传自定义二维码',
                       }],
                     })(<ImageUploadCustomed
+                      disabled={disabled}
                       crop={false}
-                      disabled={false}
                       cropOptions={{ aspect: 1 }}
+                      axiosComtomed={this.props.axiosComtomed}
+                      staticVideoJJAPI={this.props.staticVideoJJAPI}
+                      qiniuUploadAPI={this.props.qiniuUploadAPI}
                     />)
                   }
                 </div>
@@ -478,7 +503,10 @@ export default class ModalAdRedPackets extends Component {
                       required: true,
                       message: '红包自动打开时间不合法',
                     }],
-                  })(<InputNumber min={1} />)
+                  })(<InputNumber
+                    disabled={disabled}
+                    min={1}
+                  />)
                 }
                 &nbsp;秒
               </FormItem>
@@ -491,7 +519,9 @@ export default class ModalAdRedPackets extends Component {
                   form.getFieldDecorator('qrCodePage.descOption', {
                     initialValue: data.qrCodePage.descOption,
                     rules: [],
-                  })(<RadioGroup>
+                  })(<RadioGroup
+                    disabled={disabled}
+                  >
                     <Radio key="a" value={0}>使用图片说明</Radio>
                     <Radio key="b" value={1}>使用文字说明</Radio>
                   </RadioGroup>)
@@ -521,8 +551,11 @@ export default class ModalAdRedPackets extends Component {
                       message: '请上传图片说明',
                     }],
                   })(<ImageUploadCustomed
+                    axiosComtomed={this.props.axiosComtomed}
+                    staticVideoJJAPI={this.props.staticVideoJJAPI}
+                    qiniuUploadAPI={this.props.qiniuUploadAPI}
+                    disabled={disabled}
                     crop
-                    disabled={false}
                     cropOptions={{ aspect: 6 / 4 }}
                   />)
                 }
@@ -553,6 +586,7 @@ export default class ModalAdRedPackets extends Component {
                     },
                   }],
                 })(<Input
+                  disabled={disabled}
                   placeholder="红包说明共2行 最多20个中文字"
                   type="textarea"
                   autosize={{ minRows: 2, maxRows: 2 }}
@@ -575,6 +609,7 @@ export default class ModalAdRedPackets extends Component {
                     initialValue: data.afterOpen.title,
                     rules: [],
                   })(<Input
+                    disabled={disabled}
                     placeholder="请输入广告标题"
                     style={{ width: '250px' }}
                   />)
@@ -602,6 +637,7 @@ export default class ModalAdRedPackets extends Component {
                       },
                     }],
                   })(<Input
+                    disabled={disabled}
                     placeholder="请输入广告slogan，共两行，不多于20个字符"
                     type="textarea"
                   />)
@@ -630,8 +666,11 @@ export default class ModalAdRedPackets extends Component {
                             message: '请上传广告背景图片',
                           }],
                         })(<ImageUploadCustomed
+                          axiosComtomed={this.props.axiosComtomed}
+                          staticVideoJJAPI={this.props.staticVideoJJAPI}
+                          qiniuUploadAPI={this.props.qiniuUploadAPI}
                           crop
-                          disabled={false}
+                          disabled={disabled}
                           cropOptions={{ aspect: 3 / 5 }}
                         />)
                       }
@@ -660,8 +699,11 @@ export default class ModalAdRedPackets extends Component {
                             message: '请上传广告展示图片',
                           }],
                         })(<ImageUploadCustomed
+                          axiosComtomed={this.props.axiosComtomed}
+                          staticVideoJJAPI={this.props.staticVideoJJAPI}
+                          qiniuUploadAPI={this.props.qiniuUploadAPI}
                           crop
-                          disabled={false}
+                          disabled={disabled}
                           cropOptions={{ aspect: 6 / 5 }}
                         />)
                       }
@@ -684,7 +726,10 @@ export default class ModalAdRedPackets extends Component {
                       pattern: reg.httpRegWithProtocol,
                       message: '广告链接输入不正确',
                     }],
-                  })(<Input placeholder="广告链接" />)
+                  })(<Input
+                    placeholder="广告链接"
+                    disabled={disabled}
+                  />)
                 }
               </FormItem>
               <FormItem
@@ -692,6 +737,8 @@ export default class ModalAdRedPackets extends Component {
                 label="监测代码"
               >
                 <MonitorUrl
+                  disabled={disabled}
+                  ctx={'afterOpen.monitorUrl'}
                   monitorUrlList={data.afterOpen.monitorUrl}
                 />
               </FormItem>
@@ -708,6 +755,7 @@ export default class ModalAdRedPackets extends Component {
                       message: '按钮文字不能为空',
                     }],
                   })(<Input
+                    disabled={disabled}
                     placeholder="请输入按钮文字"
                     style={{ width: '250px' }}
                   />)

@@ -16,7 +16,6 @@ import style from '../style.M.less';
 const RadioGroup = Radio.Group;
 const FormItem = Form.Item;
 const { event, reg, decorators: { formCreate }, validate } = utils;
-let monitorUrl = [];
 
 @formCreate()
 @CSSModule(style)
@@ -82,13 +81,16 @@ export default class PasswordPacket extends Component {
     const { form } = this.props;
     event.$on('validateFields', (callback) => {
       // before get monitorUrl value, clear array
-      monitorUrl = [];
+      let monitorUrl = {};
       let monitorErr = null;
       event.$emit('validateMonitorUrl', (data) => {
         if (data instanceof Error) {
           monitorErr = data;
         }
-        monitorUrl.push(data);
+        monitorUrl = {
+          ...monitorUrl,
+          ...data,
+        };
       });
 
       form.validateFields((err, values) => {
@@ -109,7 +111,7 @@ export default class PasswordPacket extends Component {
 
 
   render() {
-    const { form } = this.props;
+    const { form, disabled } = this.props;
     const { data } = this.state;
     const prefix = 'redpacket-ads-resource';
 
@@ -127,7 +129,7 @@ export default class PasswordPacket extends Component {
 
     return (
       <div className={`${prefix}`}>
-        <Form horizontal>
+        <Form>
           <FormItem
             {...formItemLayout}
             label="标题"
@@ -141,6 +143,7 @@ export default class PasswordPacket extends Component {
                   message: '红包标题不能为空',
                 }],
               })(<Input
+                disabled={disabled}
                 style={{ width: '320px' }}
                 placeholder="请输入广告标题"
               />)
@@ -164,8 +167,11 @@ export default class PasswordPacket extends Component {
                     message: '请上传热点图片',
                   }],
                 })(<ImageUploadCustomed
+                  axiosComtomed={this.props.axiosComtomed}
+                  staticVideoJJAPI={this.props.staticVideoJJAPI}
+                  qiniuUploadAPI={this.props.qiniuUploadAPI}
                   crop={false}
-                  disabled={false}
+                  disabled={disabled}
                   cropOptions={{
                     aspect: 90 / 120,
                   }}
@@ -178,6 +184,8 @@ export default class PasswordPacket extends Component {
             label="监测代码"
           >
             <MonitorUrl
+              ctx={'monitorUrl'}
+              disabled={disabled}
               monitorUrlList={data.monitorUrl}
             />
           </FormItem>
@@ -188,7 +196,9 @@ export default class PasswordPacket extends Component {
                   valuePropName: 'checked',
                   initialValue: data.displayCountDown,
                   rules: [],
-                })(<Checkbox>
+                })(<Checkbox
+                  disabled={disabled}
+                >
                   是否显示提示标语
                 </Checkbox>)
               }
@@ -218,6 +228,7 @@ export default class PasswordPacket extends Component {
                     },
                   }],
                 })(<Input
+                  disabled={disabled}
                   type="textarea"
                   placeholder="提示标语文本 共8个字符 一行4个字符"
                   autosize={{ minRows: 2, maxRows: 2 }}
@@ -242,6 +253,7 @@ export default class PasswordPacket extends Component {
                   message: '红包标题不能大于8个字符',
                 }],
               })(<Input
+                disabled={disabled}
                 style={{ width: '320px' }}
                 placeholder="请输入红包标题"
               />)
@@ -271,8 +283,11 @@ export default class PasswordPacket extends Component {
                         message: '请上传红包背景图片',
                       }],
                     })(<ImageUploadCustomed
+                      axiosComtomed={this.props.axiosComtomed}
+                      staticVideoJJAPI={this.props.staticVideoJJAPI}
+                      qiniuUploadAPI={this.props.qiniuUploadAPI}
                       crop
-                      disabled={false}
+                      disabled={disabled}
                       cropOptions={{
                         aspect: 210 / 370,
                       }}
@@ -303,8 +318,11 @@ export default class PasswordPacket extends Component {
                           message: '请上传品牌LOGO小图',
                         }],
                       })(<ImageUploadCustomed
+                        axiosComtomed={this.props.axiosComtomed}
+                        staticVideoJJAPI={this.props.staticVideoJJAPI}
+                        qiniuUploadAPI={this.props.qiniuUploadAPI}
                         crop
-                        disabled={false}
+                        disabled={disabled}
                         cropOptions={{
                           aspect: 120 / 120,
                         }}
@@ -338,6 +356,7 @@ export default class PasswordPacket extends Component {
                   },
                 }],
               })(<Input
+                disabled={disabled}
                 type="textarea"
                 autosize={{ minRows: 2, maxRows: 2 }}
                 style={{ width: '320px' }}
@@ -360,7 +379,10 @@ export default class PasswordPacket extends Component {
                   max: 8,
                   message: '按钮文字不能大于8个字符',
                 }],
-              })(<Input placeholder="请输入按钮文字" />)
+              })(<Input
+                disabled={disabled}
+                placeholder="请输入按钮文字"
+              />)
             }
           </FormItem>
           <FormItem
@@ -385,6 +407,7 @@ export default class PasswordPacket extends Component {
                   },
                 }],
               })(<Input
+                disabled={disabled}
                 type="textarea"
                 autosize={{ minRows: 2, maxRows: 2 }}
                 style={{ width: '320px' }}
@@ -414,8 +437,11 @@ export default class PasswordPacket extends Component {
                     message: '请上传广告banner图片',
                   }],
                 })(<ImageUploadCustomed
+                  axiosComtomed={this.props.axiosComtomed}
+                  staticVideoJJAPI={this.props.staticVideoJJAPI}
+                  qiniuUploadAPI={this.props.qiniuUploadAPI}
                   crop
-                  disabled={false}
+                  disabled={disabled}
                   cropOptions={{
                     aspect: 500 / 150,
                   }}
@@ -435,7 +461,10 @@ export default class PasswordPacket extends Component {
                   pattern: reg.httpRegWithProtocol,
                   message: '广告banner外链不合法',
                 }],
-              })(<Input placeholder="请输入广告banner外链" />)
+              })(<Input
+                disabled={disabled}
+                placeholder="请输入广告banner外链"
+              />)
             }
           </FormItem>
           <FormItem
@@ -443,6 +472,8 @@ export default class PasswordPacket extends Component {
             label="监测代码"
           >
             <MonitorUrl
+              ctx={'passwordPage.monitorUrl'}
+              disabled={disabled}
               monitorUrlList={data.passwordPage.monitorUrl}
             />
           </FormItem>

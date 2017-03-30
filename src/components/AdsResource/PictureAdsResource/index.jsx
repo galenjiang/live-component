@@ -171,6 +171,7 @@ export default class PictureAdsResource extends Component {
     const { onSkinChange, onOk } = this;
 
     const modalProps = {
+      disabled,
       isCreated,
       title: _.find(config, item => item.style === data.style).type,
       skinTypeList: config,

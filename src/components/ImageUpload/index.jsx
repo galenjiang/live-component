@@ -74,7 +74,7 @@ export default class ImageUpload extends Component {
    */
   beforeUpload(file) {
     const { checkFile, onUploadChange, uploadFileByFormData } = this.props;
-    // check file
+
     checkFile(file)
       .then(({ shouldCrop }) => {
 
@@ -208,6 +208,7 @@ export default class ImageUpload extends Component {
               style={isExistFile ? { display: 'none' } : {}}
             >
               <Upload.Dragger
+                disabled={disabled}
                 showUploadList={false}
                 multipe={false}
                 beforeUpload={e => this.beforeUpload(e)}

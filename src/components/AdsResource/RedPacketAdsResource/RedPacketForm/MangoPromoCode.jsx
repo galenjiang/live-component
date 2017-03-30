@@ -15,7 +15,6 @@ import style from '../style.M.less';
 
 const FormItem = Form.Item;
 const { event, reg, decorators: { formCreate }, validate } = utils;
-let monitorUrl = [];
 
 @formCreate()
 @CSSModule(style)
@@ -84,15 +83,19 @@ export default class PromoCodePacket extends Component {
 
   componentDidMount() {
     const { form } = this.props;
+    const { data } = this.state;
     event.$on('validateFields', (callback) => {
       // before get monitorUrl value, clear array
-      monitorUrl = [];
+      let monitorUrl = {};
       let monitorErr = null;
       event.$emit('validateMonitorUrl', (data) => {
         if (data instanceof Error) {
           monitorErr = data;
         }
-        monitorUrl.push(data);
+        monitorUrl = {
+          ...monitorUrl,
+          ...data,
+        };
       });
 
       form.validateFields((err, values) => {
@@ -102,12 +105,16 @@ export default class PromoCodePacket extends Component {
 
         if (monitorErr) return false;
 
-        if (!this.promoCode) {
-          message.error('请上传优惠码');
+        let formData = null;
+        if (_.isUndefined(data.promoCodePage.hadPromoCode) && !this.promoCode) {
+          message.error('请上传优惠码配置文件');
           return false;
+        } else if (this.promoCode) {
+          formData = new FormData();
+          formData.append('promo_code', this.promoCode);
         }
 
-        callback(values, monitorUrl, this.promoCode);
+        callback(values, monitorUrl, formData);
       });
     });
   }
@@ -131,7 +138,7 @@ export default class PromoCodePacket extends Component {
   }
 
   render() {
-    const { form } = this.props;
+    const { form, disabled } = this.props;
     const { data } = this.state;
     const { uploadFile } = this;
     const prefix = 'redpacket-ads-resource';
@@ -154,7 +161,7 @@ export default class PromoCodePacket extends Component {
 
     return (
       <div styleName={`${prefix}`}>
-        <Form horizontal>
+        <Form>
           <FormItem
             {...formItemLayout}
             label="标题"
@@ -168,6 +175,7 @@ export default class PromoCodePacket extends Component {
                   message: '红包标题不能为空',
                 }],
               })(<Input
+                disabled={disabled}
                 style={{ width: '320px' }}
                 placeholder="请输入广告标题"
               />)
@@ -191,8 +199,11 @@ export default class PromoCodePacket extends Component {
                     message: '请上传热点图片',
                   }],
                 })(<ImageUploadCustomed
+                  axiosComtomed={this.props.axiosComtomed}
+                  staticVideoJJAPI={this.props.staticVideoJJAPI}
+                  qiniuUploadAPI={this.props.qiniuUploadAPI}
                   crop={false}
-                  disabled={false}
+                  disabled={disabled}
                   cropOptions={{
                     aspect: 90 / 120,
                   }}
@@ -205,6 +216,8 @@ export default class PromoCodePacket extends Component {
             label="监测代码"
           >
             <MonitorUrl
+              ctx={'monitorUrl'}
+              disabled={disabled}
               monitorUrlList={data.monitorUrl}
             />
           </FormItem>
@@ -215,7 +228,9 @@ export default class PromoCodePacket extends Component {
                   valuePropName: 'checked',
                   initialValue: data.displayCountDown,
                   rules: [],
-                })(<Checkbox>
+                })(<Checkbox
+                  disabled={disabled}
+                >
                   是否显示提示标语
                 </Checkbox>)
               }
@@ -245,6 +260,7 @@ export default class PromoCodePacket extends Component {
                     },
                   }],
                 })(<Input
+                  disabled={disabled}
                   type="textarea"
                   placeholder="提示标语文本 共8个字符 一行4个字符"
                   autosize={{ minRows: 2, maxRows: 2 }}
@@ -269,6 +285,7 @@ export default class PromoCodePacket extends Component {
                   message: '顶部标题不能大于8个字符',
                 }],
               })(<Input
+                disabled={disabled}
                 style={{ width: '320px' }}
                 placeholder="请输入顶部标题"
               />)
@@ -298,8 +315,11 @@ export default class PromoCodePacket extends Component {
                         message: '请上传红包背景图片',
                       }],
                     })(<ImageUploadCustomed
+                      axiosComtomed={this.props.axiosComtomed}
+                      staticVideoJJAPI={this.props.staticVideoJJAPI}
+                      qiniuUploadAPI={this.props.qiniuUploadAPI}
                       crop
-                      disabled={false}
+                      disabled={disabled}
                       cropOptions={{
                         aspect: 210 / 370,
                       }}
@@ -330,8 +350,11 @@ export default class PromoCodePacket extends Component {
                           message: '请上传品牌LOGO小图',
                         }],
                       })(<ImageUploadCustomed
+                        axiosComtomed={this.props.axiosComtomed}
+                        staticVideoJJAPI={this.props.staticVideoJJAPI}
+                        qiniuUploadAPI={this.props.qiniuUploadAPI}
                         crop
-                        disabled={false}
+                        disabled={disabled}
                         cropOptions={{
                           aspect: 120 / 120,
                         }}
@@ -359,6 +382,7 @@ export default class PromoCodePacket extends Component {
                   message: '热点标语不能大于12个字符',
                 }],
               })(<Input
+                disabled={disabled}
                 style={{ width: '320px' }}
                 placeholder="请输入红包标题, 最多12个字符"
               />)
@@ -380,6 +404,7 @@ export default class PromoCodePacket extends Component {
                   message: '红包内容不能大于8个字符',
                 }],
               })(<Input
+                disabled={disabled}
                 style={{ width: '320px' }}
                 placeholder="请输入红包内容"
               />)
@@ -404,6 +429,7 @@ export default class PromoCodePacket extends Component {
                   },
                 }],
               })(<Input
+                disabled={disabled}
                 type="textarea"
                 autosize={{ minRows: 2, maxRows: 2 }}
                 style={{ width: '320px' }}
@@ -433,6 +459,7 @@ export default class PromoCodePacket extends Component {
                   },
                 }],
               })(<Input
+                disabled={disabled}
                 type="textarea"
                 autosize={{ minRows: 2, maxRows: 2 }}
                 style={{ width: '320px' }}
@@ -455,7 +482,10 @@ export default class PromoCodePacket extends Component {
                   max: 8,
                   message: '按钮文字不能大于8个字符',
                 }],
-              })(<Input placeholder="请输入按钮文字" />)
+              })(<Input
+                disabled={disabled}
+                placeholder="请输入按钮文字"
+              />)
             }
           </FormItem>
           <FormItem
@@ -477,6 +507,7 @@ export default class PromoCodePacket extends Component {
                   },
                 }],
               })(<Input
+                disabled={disabled}
                 type="textarea"
                 autosize={{ minRows: 2, maxRows: 2 }}
                 style={{ width: '320px' }}
@@ -506,8 +537,11 @@ export default class PromoCodePacket extends Component {
                     message: '请上传广告banner图片',
                   }],
                 })(<ImageUploadCustomed
+                  axiosComtomed={this.props.axiosComtomed}
+                  staticVideoJJAPI={this.props.staticVideoJJAPI}
+                  qiniuUploadAPI={this.props.qiniuUploadAPI}
                   crop
-                  disabled={false}
+                  disabled={disabled}
                   cropOptions={{
                     aspect: 500 / 150,
                   }}
@@ -527,7 +561,10 @@ export default class PromoCodePacket extends Component {
                   pattern: reg.httpRegWithProtocol,
                   message: '广告banner外链不合法',
                 }],
-              })(<Input placeholder="请输入广告banner外链" />)
+              })(<Input
+                disabled={disabled}
+                placeholder="请输入广告banner外链"
+              />)
             }
           </FormItem>
           <FormItem
@@ -535,6 +572,8 @@ export default class PromoCodePacket extends Component {
             label="监测代码"
           >
             <MonitorUrl
+              ctx={'promoCodePage.monitorUrl'}
+              disabled={disabled}
               monitorUrlList={data.promoCodePage.monitorUrl}
             />
           </FormItem>
@@ -544,7 +583,10 @@ export default class PromoCodePacket extends Component {
           >
             <Col span={5}>
               <Upload {...upoloadConfig}>
-                <Button type="ghost">
+                <Button
+                  type="ghost"
+                  disabled={disabled}
+                >
                   <Icon type="upload" />
                   {(this.promoCode && this.promoCode.name) || '点击上传'}
                 </Button>
@@ -569,8 +611,8 @@ export default class PromoCodePacket extends Component {
               </Tooltip>
             </Col>
             {
-              !data.promoCodePage.uploadFile && data.promoCodePage.hadPromoCode &&
-              <span>还剩下{data.promoCodePage.promoCodeNum}个优惠码</span>
+              data.promoCodePage.hadPromoCode
+              && <span>还剩下{data.promoCodePage.promoCodeNum}个优惠码</span>
             }
           </FormItem>
         </Form>
