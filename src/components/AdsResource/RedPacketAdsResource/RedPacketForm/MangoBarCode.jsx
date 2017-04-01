@@ -43,9 +43,8 @@ export default class MangoBarCode extends Component {
     this.state = {
       isColorPickerShow: false,
       data: {
-        ..._.cloneDeep(data),
+        ..._.defaults(data, { countDownText: '红包出现\n点击快抢' }),
         ...{
-          countDownText: '红包出现\n点击快抢',
           qrCodePage: _.defaults(data.qrCodePage, qrCodePageConfig),
           afterOpen: _.defaults(data.afterOpen, afterOpenConfig),
         },

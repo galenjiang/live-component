@@ -16,11 +16,21 @@ import event from '../../../utils/event';
 
 // @CSSModule(style)
 export default class SidebarModal extends Component {
-  static propsType = {
+  static propTypes = {
+    styleConfig: PropTypes.object,
     data: PropTypes.object.isRequired,
     onCancel: PropTypes.func.isRequired,
     onOk: PropTypes.func.isRequired,
   }
+
+  static defaultProps = {
+    styleConfig: {
+      SideBarAds: {
+        style: config.map(item => item.style),
+      },
+    },
+  }
+
 
   constructor(props) {
     super();
@@ -57,8 +67,12 @@ export default class SidebarModal extends Component {
    * @param index
    */
   onSkinChange = (index) => {
+    const { styleConfig } = this.props;
     const { data } = this.state;
-    data.style = config[index].style;
+    const styleList = _(config).filter((item) => {
+      return _(styleConfig.SideBarAds.style).indexOf(item.style) >= 0;
+    }).value();
+    data.style = styleList[index].style;
     this.setState({ data });
   }
 
@@ -94,17 +108,20 @@ export default class SidebarModal extends Component {
   }
 
   render() {
-    const { onCancel, isCreated, disabled } = this.props;
+    const { onCancel, isCreated, disabled, styleConfig } = this.props;
     const { loading, data } = this.state;
     const { onSkinChange, onOk } = this;
 
+    const styleList = _(config).filter((item) => {
+      return _(styleConfig.SideBarAds.style).indexOf(item.style) >= 0;
+    }).value();
 
     const modalProps = {
       disabled,
       isCreated,
-      title: _.find(config, item => item.style === data.style).type,
-      skinTypeList: config,
-      skin: _.findIndex(config, item => item.style === data.style),
+      title: _.get(_.find(styleList, item => item.style === data.style), 'type'),
+      skinTypeList: styleList,
+      skin: _.findIndex(styleList, item => item.style === data.style),
       onSkinChange,
       onCancel,
       onOk,

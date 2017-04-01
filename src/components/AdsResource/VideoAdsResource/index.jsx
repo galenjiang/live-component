@@ -20,6 +20,19 @@ const FormItem = Form.Item;
 @formCreate()
 @CSSModule(style)
 export default class VideoAdsResource extends Component {
+  static propTypes = {
+    data: PropTypes.object,
+  }
+
+  static defaultProps = {
+    data: {},
+    styleConfig: {
+      VideoAds: {
+        style: config.map(item => item.style),
+      },
+    },
+  }
+
   constructor(props) {
     super();
 
@@ -44,13 +57,7 @@ export default class VideoAdsResource extends Component {
     };
   }
 
-  static propsType = {
-    data: PropTypes.object.isRequired,
-  }
 
-  static defaultProps = {
-    data: {},
-  }
 
   /**
    * 点击确定的提交表单
@@ -264,12 +271,35 @@ export default class VideoAdsResource extends Component {
     });
   }
 
+
+  /**
+   * skin change
+   * @param index
+   * @private
+   */
+  onSkinChange = (index) => {
+    const { styleConfig } = this.props;
+    const { data } = this.state;
+
+    const styleList = _(config).filter((item) => {
+      return _(styleConfig.VideoAds.style).indexOf(item.style) >= 0;
+    }).value();
+
+    data.style = styleList[index].style;
+    this.setState({ data });
+  }
+
   render() {
     const prefix = 'video-ads-resource';
 
-    const { isCreated, onCancel, form, disabled } = this.props;
+    const { isCreated, onCancel, form, disabled, styleConfig } = this.props;
     const { loading, data } = this.state;
     const { onOk, addVideo, removeVideo } = this;
+
+
+    const styleList = _(config).filter((item) => {
+      return _(styleConfig.VideoAds.style).indexOf(item.style) >= 0;
+    }).value();
 
     const formItemLayout = {
       labelCol: { span: 6 },
@@ -290,9 +320,9 @@ export default class VideoAdsResource extends Component {
     const modalProps = {
       disabled,
       isCreated,
-      title: _.find(config, item => item.style === data.style).type,
-      skinTypeList: config,
-      skin: _.findIndex(config, item => item.style === data.style),
+      title: _.get(_.find(styleList, item => item.style === data.style), 'type'),
+      skinTypeList: styleList,
+      skin: _.findIndex(styleList, item => item.style === data.style),
       onCancel,
       onOk,
       loading,

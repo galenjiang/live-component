@@ -69,12 +69,11 @@ export default class PromoCodePacket extends Component {
 
     this.state = {
       data: {
-        ..._.cloneDeep(data),
-        ...{
+        ..._.defaults(data, {
           pic: 'http://videojj-cdn.oss-cn-beijing.aliyuncs.com/images/web/live/ads/redpacket/redpacket-tag.png',
-        },
-        ...{
           countDownText: '红包出现\n点击快抢',
+        }),
+        ...{
           promoCodePage: _.defaults(data.promoCodePage, promoCodePageConfig),
         },
       },
@@ -106,7 +105,7 @@ export default class PromoCodePacket extends Component {
         if (monitorErr) return false;
 
         let formData = null;
-        if (_.isUndefined(data.promoCodePage.hadPromoCode) && !this.promoCode) {
+        if (_.isUndefined(data.promoCodePage.hadPromoCode || data.promoCodePage.promoCodeNum === 0) && !this.promoCode) {
           message.error('请上传优惠码配置文件');
           return false;
         } else if (this.promoCode) {
@@ -611,7 +610,7 @@ export default class PromoCodePacket extends Component {
               </Tooltip>
             </Col>
             {
-              data.promoCodePage.hadPromoCode
+              _.isNumber(data.promoCodePage.promoCodeNum)
               && <span>还剩下{data.promoCodePage.promoCodeNum}个优惠码</span>
             }
           </FormItem>

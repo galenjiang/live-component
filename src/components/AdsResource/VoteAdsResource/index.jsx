@@ -21,6 +21,23 @@ import style from './style.M.less';
 
 @CSSModule(style)
 export default class VoteAdsResource extends Component {
+  static propTypes = {
+    data: PropTypes.object,
+    onCancel: PropTypes.func.isRequired,
+    onOk: PropTypes.func.isRequired,
+  }
+  static propsType = {
+  }
+
+  static defaultProps = {
+    data: {},
+    styleConfig: {
+      VoteAds: {
+        style: config.map(item => item.style),
+      },
+    },
+  }
+
   constructor(props) {
     super();
     const { data } = props;
@@ -71,19 +88,21 @@ export default class VoteAdsResource extends Component {
     // }
   }
 
-  static propsType = {
-    data: PropTypes.object.isRequired,
-    onCancel: PropTypes.func.isRequired,
-    onOk: PropTypes.func.isRequired,
-  }
+
 
   /**
    * skin change
    * @param index
    */
   onSkinChange = (index) => {
+    const { styleConfig } = this.props;
     const { data } = this.state;
-    data.style = config[index].style;
+    const styleList = _(config).filter((item) => {
+      return _(styleConfig.VoteAds.style).indexOf(item.style) >= 0;
+    }).value();
+
+
+    data.style = styleList[index].style;
     this.setState({ data });
   }
 
@@ -219,17 +238,21 @@ export default class VoteAdsResource extends Component {
   }
 
   render() {
-    const { onCancel, isCreated, disabled } = this.props;
+    const { onCancel, isCreated, disabled, styleConfig } = this.props;
     const { loading, data } = this.state;
     const { onSkinChange, onOk } = this;
+
+    const styleList = _(config).filter((item) => {
+      return _(styleConfig.VoteAds.style).indexOf(item.style) >= 0;
+    }).value();
 
 
     const modalProps = {
       disabled,
       isCreated,
-      title: _.find(config, item => item.style === data.style).type,
-      skinTypeList: config,
-      skin: _.findIndex(config, item => item.style === data.style),
+      title: _.get(_.find(styleList, item => item.style === data.style), 'type'),
+      skinTypeList: styleList,
+      skin: _.findIndex(styleList, item => item.style === data.style),
       onSkinChange,
       onCancel,
       onOk,

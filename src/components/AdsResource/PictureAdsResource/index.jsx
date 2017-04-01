@@ -23,6 +23,18 @@ const Option = Select.Option;
 @formCreate()
 @CSSModule(style)
 export default class PictureAdsResource extends Component {
+  static propTypes = {
+    styleConfig: PropTypes.object,
+  }
+  static defaultProps = {
+    styleConfig: {
+      PicAds: {
+        style: config.map(item => item.style),
+      },
+    },
+  }
+
+
   constructor(props) {
     super();
 
@@ -160,22 +172,30 @@ export default class PictureAdsResource extends Component {
    * @private
    */
   onSkinChange = (index) => {
+    const { styleConfig } = this.props;
     const { data } = this.state;
-    data.style = config[index].style;
+    const styleList = _(config).filter((item) => {
+      return _(styleConfig.PicAds.style).indexOf(item.style) >= 0;
+    }).value();
+    data.style = styleList[index].style;
     this.setState({ data });
   }
 
   render() {
-    const { onCancel, isCreated, sidebarAdsList, form, disabled } = this.props;
+    const { onCancel, isCreated, sidebarAdsList, form, disabled, styleConfig } = this.props;
     const { loading, data } = this.state;
     const { onSkinChange, onOk } = this;
+
+    const styleList = _(config).filter((item) => {
+      return _(styleConfig.PicAds.style).indexOf(item.style) >= 0;
+    }).value();
 
     const modalProps = {
       disabled,
       isCreated,
-      title: _.find(config, item => item.style === data.style).type,
-      skinTypeList: config,
-      skin: _.findIndex(config, item => item.style === data.style),
+      title: _.get(_.find(styleList, item => item.style === data.style), 'type'),
+      skinTypeList: styleList,
+      skin: _.findIndex(styleList, item => item.style === data.style),
       onSkinChange,
       onOk,
       onCancel,

@@ -23,6 +23,19 @@ const { event, decorators: { formCreate } } = utils;
 
 @CSSModule(style)
 export default class ModalAdRedPackets extends Component {
+  static propTypes = {
+    styleConfig: PropTypes.object,
+  }
+
+  static defaultProps = {
+    styleConfig: {
+      HongBaoAds: {
+        style: config.map(item => item.style),
+      },
+    },
+  }
+
+
   static propsType = {
     data: PropTypes.object.isRequired,
     isCreated: PropTypes.bool,
@@ -99,6 +112,11 @@ export default class ModalAdRedPackets extends Component {
           return item;
         })
         .value();
+      const temp = _.get(sortedData, 'qrCodePage.descriptionText');
+      if (temp) {
+        sortedData.qrCodePage.descriptionText = [];
+        sortedData.qrCodePage.descriptionText[0] = temp;
+      }
       _(monitorUrl).forEach((item, key) => {
         const monitor = _(item)
           .map(el => ({
@@ -266,33 +284,30 @@ export default class ModalAdRedPackets extends Component {
    * @param index
    */
   onSkinChange = (index) => {
+    const { styleConfig } = this.props;
     const { data } = this.state;
-    data.style = config[index].style;
+    const styleList = _(config).filter((item) => {
+      return _(styleConfig.HongBaoAds.style).indexOf(item.style) >= 0;
+    }).value();
+    data.style = styleList[index].style;
     this.setState({ data });
   }
 
   render() {
-    const { onCancel, isCreated, disabled } = this.props;
+    const { onCancel, isCreated, disabled, styleConfig } = this.props;
     const { data, loading } = this.state;
     const { onSkinChange, onOk } = this;
 
-
-    // const { loading, data, isColorPickerShow } = this.state
-    // const { isCreateBall, onCancel } = this.props
-    // const { getFieldProps, getFieldValue, setFieldsValue } = this.props.form
-    // const { setAfterOpenMonitorUrl, setMonitorUrl, onSkinChange, onConfirm, onSubmitDataChange, onHandleColorInputBlur } = this
-
-    // const afterOpen = data.afterOpen || {}
-    // const qrCodePage = data.qrCodePage || {}
-
-    // const style = data.style
+    const styleList = _(config).filter((item) => {
+      return _(styleConfig.HongBaoAds.style).indexOf(item.style) >= 0;
+    }).value();
 
     const modalProps = {
       disabled,
       isCreated,
-      title: _.find(config, item => item.style === data.style).type,
-      skinTypeList: config,
-      skin: _.findIndex(config, item => item.style === data.style),
+      title: _.get(_.find(styleList, item => item.style === data.style), 'type'),
+      skinTypeList: styleList,
+      skin: _.findIndex(styleList, item => item.style === data.style),
       onSkinChange,
       onCancel,
       onOk,

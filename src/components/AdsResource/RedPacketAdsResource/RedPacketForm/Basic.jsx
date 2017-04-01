@@ -216,8 +216,7 @@ export default class ModalAdRedPackets extends Component {
                       form.getFieldDecorator('displayCountDown', {
                         valuePropName: 'checked',
                         initialValue: data.displayCountDown,
-                        rules: [{
-                        }],
+                        rules: [],
                       })(<Checkbox
                         disabled={disabled}
                       >

@@ -64,12 +64,11 @@ export default class PasswordPacket extends Component {
 
     this.state = {
       data: {
-        ..._.cloneDeep(data),
-        ...{
+        ..._.defaults(data, {
           pic: 'http://videojj-cdn.oss-cn-beijing.aliyuncs.com/images/web/live/ads/redpacket/redpacket-tag.png',
-        },
-        ...{
           countDownText: '红包出现\n点击快抢',
+        }),
+        ...{
           passwordPage: _.defaults(data.passwordPage, passwordPageConfig),
         },
       },
