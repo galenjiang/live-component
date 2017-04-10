@@ -19,7 +19,7 @@ const { reg, decorators: { formCreate } } = utils;
 @formCreate()
 @CSSModule(style)
 export default class MagicStickerAdsDistribution extends Component {
-  static propsType = {
+  static propTypes = {
     data: PropTypes.object.isRequired,
   }
 

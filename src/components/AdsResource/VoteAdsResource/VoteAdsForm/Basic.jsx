@@ -8,7 +8,7 @@ import _ from 'lodash';
 
 // self
 import MonitorUrl from '../../../MonitorUrl';
-import ImageUploadCustomed from '../../../ImageUploadCustomed';
+// import ImageUploadCustomed from '../../../ImageUploadCustomed';
 import utils from '../../../../utils';
 import style from '../style.M.less';
 

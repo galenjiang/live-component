@@ -1,77 +1,33 @@
-//
-//                       _oo0oo_
-//                      o8888888o
-//                      88" . "88
-//                      (| -_- |)
-//                      0\  =  /0
-//                    ___/`---'\___
-//                  .' \\|     |// '.
-//                 / \\|||  :  |||// \
-//                / _||||| -:- |||||- \
-//               |   | \\\  -  /// |   |
-//               | \_|  ''\---/''  |_/ |
-//               \  .-\__  '-'  ___/-. /
-//             ___'. .'  /--.--\  `. .'___
-//          ."" '<  `.___\_<|>_/___.' >' "".
-//         | | :  `- \`.;`\ _ /`;.`/ - ` : | |
-//         \  \ `_.   \_ __\ /__ _/   .-` /  /
-//     =====`-.____`.___ \_____/___.-`___.-'=====
-//                       `=---='
-//
-//
-//     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//
-//               佛祖保佑         永无BUG
-//
-//
-//
-'use strict'
-//official
-import React, { Component, PropTypes } from 'react'
+// official
+import React, { Component, PropTypes } from 'react';
 
-//Third-part
-import { Icon } from 'antd'
-//mine
-import './Breadcrumb.less'
+// Third-part
+import { Icon } from 'antd';
+// mine
+import './Breadcrumb.less';
+
 export default class Breadcrumb extends Component {
-  constructor(props) {
-    super(props)
+  static propTypes = {
+    wrapClassName: PropTypes.string,
+    breadcrumbList: PropTypes.arrayOf(PropTypes.string),
+    current: PropTypes.number,
+    onChange: PropTypes.func,
   }
 
-  static propsType = {
-    wrapClassName: PropTypes.string,
-    breadcrumbList: PropTypes.array.required,
-    current: PropTypes.number,
-    onChange: PropTypes.func
-  }
   static defaultProps = {
     wrapClassName: '',
     breadcrumbList: [],
     current: 0,
-    onChange(){
-
-    }
+    onChange() {},
   }
 
-  componentWillMount() {
-
-  }
-
-  componentDidMount() {
-
-  }
-
-  componentWillReceiveProps(props) {
-
-  }
-
-  componentWillUnmount() {
-
+  constructor(props) {
+    super(props);
   }
 
   __onBreadcrumbItemClick(current) {
-    const { onChange } = this.props
-    onChange && onChange(current)
+    const { onChange } = this.props;
+    onChange(current);
   }
 
   render() {
@@ -86,11 +42,12 @@ export default class Breadcrumb extends Component {
                 <section
                   key={index}
                   className={`${classNamePrefix}-item ${current === index ? 'active' : ''}`}
-                  onClick={()=>this.__onBreadcrumbItemClick(index)}>
+                  onClick={()=>this.__onBreadcrumbItemClick(index)}
+                >
                     <span className={`${classNamePrefix}-counter`}>
                       {index + 1}
                     </span>
-                  <Icon type="check-circle-o"/>
+                  <Icon type="check-circle-o" />
                   {item}
                 </section>
               )

@@ -20,7 +20,7 @@ const { event, reg, decorators: { formCreate }, validate } = utils;
 @formCreate()
 @CSSModule(style)
 export default class PasswordPacket extends Component {
-  static propsType = {
+  static propTypes = {
     data: PropTypes.object.isRequired,
   }
 

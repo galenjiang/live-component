@@ -10,7 +10,7 @@ import './style.less';
 // @CSSModule(style, { allowMultiple: true })
 export default class ResourceModal extends Component {
 
-  static propsType = {
+  static propTypes = {
     disabled: PropTypes.bool,
     isCreated: PropTypes.bool.isRequired,
     title: PropTypes.string.isRequired,           // 标题
@@ -122,7 +122,7 @@ export default class ResourceModal extends Component {
         width={'900px'}
         visible
         title={modalTitleElement}
-        ref="modal"
+        // ref="modal"
         footer={ModalFooter}
         closable={false}
         wrapClassName={prefix}

@@ -567,13 +567,13 @@ const config = [
   },
   {
     type: 'IWant基础风',
-    skin: 'http://o6p1020jg.bkt.clouddn.com/static/voteball/basic-skin.png',
+    skin: 'http://videojj-cdn.oss-cn-beijing.aliyuncs.com/images/web/live/vote-previous-iwant-skin.png',
     style: 10200,
   },
 
   {
     type: 'IWant扁平风',
-    skin: 'http://o6p1020jg.bkt.clouddn.com/static/voteball/flat-skin.png',
+    skin: 'http://videojj-cdn.oss-cn-beijing.aliyuncs.com/images/web/live/vote-previous-iwant-skin.png',
     style: 10201,
   },
 ];

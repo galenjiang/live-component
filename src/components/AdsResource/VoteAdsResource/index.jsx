@@ -26,7 +26,7 @@ export default class VoteAdsResource extends Component {
     onCancel: PropTypes.func.isRequired,
     onOk: PropTypes.func.isRequired,
   }
-  static propsType = {
+  static propTypes = {
   }
 
   static defaultProps = {

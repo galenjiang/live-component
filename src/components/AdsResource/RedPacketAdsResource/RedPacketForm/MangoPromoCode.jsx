@@ -19,10 +19,8 @@ const { event, reg, decorators: { formCreate }, validate } = utils;
 @formCreate()
 @CSSModule(style)
 export default class PromoCodePacket extends Component {
-  static propsType = {
-    isCreateBall: PropTypes.bool.isRequired,
-    data: PropTypes.object.isRequired,
-    onChange: PropTypes.func.isRequired,
+  static propTypes = {
+    data: PropTypes.object,
   }
 
   constructor(props) {

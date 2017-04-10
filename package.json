@@ -23,16 +23,30 @@
         "type": "range"
       },
       "/mnt/c/github/video++/consolelive/client/modules/console"
+    ],
+    [
+      {
+        "raw": "live-components@^0.1.2",
+        "scope": null,
+        "escapedName": "live-components",
+        "name": "live-components",
+        "rawSpec": "^0.1.2",
+        "spec": ">=0.1.2 <0.2.0",
+        "type": "range"
+      },
+      "/mnt/c/github/video++/consolelive/client/modules/console"
     ]
   ],
+  "_cnpm_publish_time": 1491041196658,
   "_from": "live-components@^0.1.2",
-  "_id": "live-components@0.1.2",
+  "_hasShrinkwrap": false,
+  "_id": "live-components@0.1.6",
   "_inCache": true,
   "_location": "/live-components",
   "_nodeVersion": "7.7.0",
   "_npmOperationalInternal": {
     "host": "packages-18-east.internal.npmjs.com",
-    "tmp": "tmp/live-components-0.1.2.tgz_1489655781162_0.5785260098055005"
+    "tmp": "tmp/live-components-0.1.6.tgz_1491041194751_0.4715024752076715"
   },
   "_npmUser": {
     "name": "galenjiang",
@@ -40,16 +54,10 @@
   },
   "_npmVersion": "4.1.2",
   "_phantomChildren": {
-    "babel-template": "6.23.0",
     "debug": "2.6.3",
-    "global": "4.3.1",
     "hoist-non-react-statics": "1.2.0",
     "lodash": "4.17.4",
-    "object-unfreeze": "1.1.0",
-    "react-deep-force-update": "2.0.1",
-    "react-proxy": "3.0.0-alpha.1",
-    "redbox-react": "1.3.4",
-    "source-map": "0.4.4"
+    "object-unfreeze": "1.1.0"
   },
   "_requested": {
     "raw": "live-components@^0.1.2",
@@ -61,11 +69,10 @@
     "type": "range"
   },
   "_requiredBy": [
-    "#USER",
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/live-components/-/live-components-0.1.2.tgz",
-  "_shasum": "55e3e86e013d169bc2e8cd703f59b1165f737be0",
+  "_resolved": "http://registry.npm.taobao.org/live-components/download/live-components-0.1.6.tgz",
+  "_shasum": "99a8233b588a4a1b9a540fe8a0ecb0d8654b9fbe",
   "_shrinkwrap": null,
   "_spec": "live-components@^0.1.2",
   "_where": "/mnt/c/github/video++/consolelive/client/modules/console",
@@ -119,8 +126,10 @@
   },
   "directories": {},
   "dist": {
-    "shasum": "55e3e86e013d169bc2e8cd703f59b1165f737be0",
-    "tarball": "https://registry.npmjs.org/live-components/-/live-components-0.1.2.tgz"
+    "shasum": "99a8233b588a4a1b9a540fe8a0ecb0d8654b9fbe",
+    "size": 95413,
+    "noattachment": false,
+    "tarball": "http://registry.npm.taobao.org/live-components/download/live-components-0.1.6.tgz"
   },
   "gitHead": "2287ad2a45f1f7f9cd4c9f95f78d1925f2cb5053",
   "license": "private",
@@ -133,10 +142,11 @@
   ],
   "name": "live-components",
   "optionalDependencies": {},
+  "publish_time": 1491041196658,
   "readme": "ERROR: No README data found!",
   "scripts": {
     "build": "cross-env NODE_BD=build node ./build/build.js",
     "server": "cross-env NODE_BD=server node ./build/dev-server.js"
   },
-  "version": "0.1.6"
+  "version": "0.1.7"
 }

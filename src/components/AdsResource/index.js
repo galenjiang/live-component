@@ -28,7 +28,7 @@ export default class AdsFactoryModal extends Component {
     }
   }
 
-  static propsType = {
+  static propTypes = {
     type: PropTypes.string.isRequired,
     onOk: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired

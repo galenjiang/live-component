@@ -43,7 +43,7 @@ export default class ImageCropModal extends Component {
     this.state = { base64, loading, cropWidth, cropHeight };
   }
 
-  static propsTypes = {
+  static propTypess = {
     fileName: PropTypes.string.isRequired,
     onCropEnd: PropTypes.func.isRequired,
     onCropCancel: PropTypes.func.isRequired,

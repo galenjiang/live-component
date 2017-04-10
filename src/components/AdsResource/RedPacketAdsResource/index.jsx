@@ -36,7 +36,7 @@ export default class ModalAdRedPackets extends Component {
   }
 
 
-  static propsType = {
+  static propTypes = {
     data: PropTypes.object.isRequired,
     isCreated: PropTypes.bool,
   }

@@ -22,7 +22,7 @@ const FormItem = Form.Item;
 @formCreate()
 @CSSModule(style)
 export default class MagicStickerAdsResource extends Component {
-  static propsType = {
+  static propTypes = {
     data: PropTypes.object.isRequired,
   }
 

@@ -12,9 +12,9 @@ export default class ColorSelect extends Component {
     };
   }
 
-  static propsType = {
+  static propTypes = {
     colors: PropTypes.array.isRequired,
-    current: PropTypes.number.isRequired,
+    current: PropTypes.number,
     onChange: PropTypes.func.isRequired,
   }
 

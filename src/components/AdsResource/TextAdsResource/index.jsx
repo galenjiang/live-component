@@ -18,7 +18,7 @@ export default class TextAdsResource extends Component {
 
   static propTypes = {
     styleConfig: PropTypes.object,
-    disabled: PropTypes.boolean,
+    disabled: PropTypes.bool,
     data: PropTypes.object,
     isCreated: PropTypes.bool,
     sidebarAdsList: PropTypes.array,
