@@ -28,7 +28,7 @@ export default class TextAdsResource extends Component {
 
   static defaultProps = {
     styleConfig: {
-      SideBarAds: {
+      TextAds: {
         style: config.map(item => item.style),
       },
     },
