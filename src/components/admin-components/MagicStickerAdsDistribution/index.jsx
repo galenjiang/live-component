@@ -43,10 +43,7 @@ export default class MagicStickerAdsDistribution extends Component {
     };
 
     this.initialValue = _(props.data.platforms)
-      .map(item => {
-        const temp = _(props.platformList).find(value => value._id === item)
-        return `${temp._id}-${temp.username}-${temp.email}`
-      })
+      .map(item => `${item._id}-${item.username}-${item.email}`)
       .value();
   }
 
