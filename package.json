@@ -148,5 +148,5 @@
     "build": "cross-env NODE_BD=build node ./build/build.js",
     "server": "cross-env NODE_BD=server node ./build/dev-server.js"
   },
-  "version": "0.1.8"
+  "version": "0.1.9"
 }
