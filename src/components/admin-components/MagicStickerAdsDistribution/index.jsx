@@ -21,15 +21,16 @@ const { reg, decorators: { formCreate } } = utils;
 export default class MagicStickerAdsDistribution extends Component {
   static propTypes = {
     data: PropTypes.object.isRequired,
+    platformList: PropTypes.object.isRequired,
   }
 
   static defaultProps = {
     data: {},
-    platformList: [],
+    platformList: {},
   }
 
   constructor(props) {
-    super();
+    super(props);
 
     const { data } = props;
 
@@ -43,7 +44,7 @@ export default class MagicStickerAdsDistribution extends Component {
     };
 
     this.initialValue = _(props.data.platforms)
-      .map(item => `${item._id}-${item.username}-${item.email}`)
+      .map(item => item._id)
       .value();
   }
 
@@ -53,13 +54,12 @@ export default class MagicStickerAdsDistribution extends Component {
       if (err) {
         return false;
       }
-      debugger
-      const sortedValues = _(values.platforms)
-        .map(item => {
-          return item.split('-')[0]
-        })
-        .value();
-      onOk({ platforms: sortedValues });
+      // const sortedValues = _(values.platforms)
+      //   .map(item => {
+      //     return item.split('-')[0]
+      //   })
+      //   .value();
+      onOk({ platforms: values.platforms });
     });
   }
 
@@ -67,7 +67,6 @@ export default class MagicStickerAdsDistribution extends Component {
     const { form, onCancel, platformList } = this.props;
     const { data } = this.state;
     const { onOk } = this;
-
     const formItemLayout = {
       labelCol: { span: 6 },
       wrapperCol: { span: 18 },
@@ -95,15 +94,18 @@ export default class MagicStickerAdsDistribution extends Component {
                     message: '不能为空',
                   }],
                 })(<Select
-                  multiple
+                  mode="multiple"
+                  optionFilterProp="children"
                 >
                   {
-                    platformList.map((item, index) => <Option
-                      key={`${item._id}`}
-                      value={`${item._id}-${item.username}-${item.email}`}
-                    >
-                      {`${item.username}: ${item.email}`}
-                    </Option>)
+                    _(platformList)
+                      .map((value, key) => <Option
+                        key={`${key}`}
+                        value={`${key}`}
+                      >
+                        {value}
+                      </Option>)
+                      .value()
                   }
                 </Select>)
               }

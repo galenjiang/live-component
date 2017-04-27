@@ -12,6 +12,7 @@ export default class Card extends Component {
   static defaultProps = {
     radio: 1,
     onDelete: () => {},
+    hasDelete: false,
     leftText: '投放',
     rightText: '编辑',
     description: '',
@@ -20,6 +21,7 @@ export default class Card extends Component {
   static propTypes = {
     onPut: PropTypes.func.isRequired,
     onEdit: PropTypes.func.isRequired,
+    hasDelete: PropTypes.bool,
     onDelete: PropTypes.func,
     radio: PropTypes.number,
     leftText: PropTypes.string,

@@ -166,6 +166,7 @@ export default class ResourceModal extends Component {
                     >
                       <Button
                         type="primary"
+                        style={{ boxSizing: 'content-box' }}
                         onClick={() => changeSkin(index)}
                         key={item.style}
                       >
