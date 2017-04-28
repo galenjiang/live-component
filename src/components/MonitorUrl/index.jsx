@@ -151,9 +151,10 @@ export default class MonitorUrl extends Component {
           })(<Input />)
           */}
         {
-          (form.getFieldValue('monitorUrlListIndex').length > 0 && this.state.show)
+          (form.getFieldValue('monitorUrlListIndex').length > 0)
           && <div
             styleName={`${prefix}-list-container`}
+            style={{ display: this.state.show ? 'block' : 'none' }}
           >
             {
               form.getFieldValue('monitorUrlListIndex').map((item, index) => <div
